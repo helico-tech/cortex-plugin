@@ -23,16 +23,9 @@ Store all answers — they will replace `{{param-name}}` placeholders in the com
 
 ## Step 2: Load Memory
 
-Read from the project's `.cortex/memory/` directory. For any path that doesn't exist, skip silently.
+Read all `.md` files from `.cortex/memory/context/`. Skip silently if the directory doesn't exist or is empty.
 
-**Always load:**
-- All `.md` files in `.cortex/memory/conventions/`
-- All `.md` files in `.cortex/memory/domain-model/`
-- All `.md` files in `.cortex/memory/lessons-learned/`
-
-**Feature-scoped** (only if a `feature-name` param was collected):
-- `.cortex/memory/decisions/{{feature-name}}.md`
-- All `.md` files in `.cortex/memory/reflections/{{feature-name}}/`
+This is the curated project knowledge — conventions, domain model, key decisions. It is always loaded in full.
 
 After loading, briefly summarize what memory was found so the user knows what context is available.
 
@@ -45,22 +38,36 @@ Hand off to the calling command's task section. The command defines:
 
 ## Step 4: Store Memory
 
-After execution completes, write results to `.cortex/memory/`. Only write if there's something meaningful to store.
+After execution completes, write a journal entry to `.cortex/memory/journal/`.
 
-**What to store:**
-- Key decisions → `.cortex/memory/decisions/{{feature-name}}.md` (append if exists)
-- Agent reflections → `.cortex/memory/reflections/{{feature-name}}/{agent-name}.md`
-- Lessons learned → `.cortex/memory/lessons-learned/{topic}.md` (append if exists)
+**Journal entry format:**
 
-**Memory file format** — all memory files use markdown with structured frontmatter:
+File path: `.cortex/memory/journal/YYYY-MM/YYYY-MM-DD-{topic}-{command-name}.md`
 
 ```markdown
 ---
 date: YYYY-MM-DD
-feature: (feature name if applicable)
-agent: (agent that produced this)
-type: decision|reflection|lesson
+command: (command that was run)
+topic: (feature or area worked on)
+agents: [(agents that participated)]
 ---
 
-(content here)
+## Summary
+(one-sentence summary of what happened)
+
+## Context
+(what problem was being solved)
+
+## Key Findings
+(bullet points of important observations)
+
+## Decisions Made
+(what was decided, with brief rationale)
+
+## Open Questions
+(anything unresolved that needs follow-up)
 ```
+
+Only write a journal entry if there's something meaningful to record. Don't create empty or boilerplate entries.
+
+**Important:** Do NOT write directly to `.cortex/memory/context/`. Context files are curated — they are maintained by humans or through an explicit curation process, never auto-written by command execution.

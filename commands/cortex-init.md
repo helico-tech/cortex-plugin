@@ -15,13 +15,10 @@ Initialize the `.cortex/` directory structure in the current project.
 ```
 .cortex/
   memory/
-    conventions/
-    domain-model/
-    decisions/
-    lessons-learned/
-    reflections/
+    context/
+    journal/
 ```
 
-3. Create a `.gitkeep` file in each empty memory subdirectory so they are tracked by git.
+3. Create a `.gitkeep` file in each empty subdirectory so they are tracked by git.
 
 4. Tell the user the initialization is complete and show the created structure.

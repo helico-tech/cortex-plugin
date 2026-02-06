@@ -30,10 +30,7 @@ Use the **cortex-runner** skill to execute this template.
 
 Review the architecture of the "{{feature-name}}" area in this codebase.
 
-**Team conventions**: (inject loaded conventions)
-**Domain model**: (inject loaded domain model)
-**Prior decisions**: (inject loaded decisions for this feature)
-**Lessons learned**: (inject loaded lessons)
+**Project context**: (inject loaded context memory)
 
 Analyze the current architecture and produce:
 
