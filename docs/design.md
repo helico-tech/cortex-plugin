@@ -200,6 +200,7 @@ cortex-team-plugin/
     workflow.md                ← /cortex-team:workflow
     workflow-designer.md       ← /cortex-team:workflow-designer
     command-designer.md        ← /cortex-team:command-designer
+    help.md                    ← /cortex-team:help
   workflows/
     feature.md                 ← design→plan→implement→review→validate
     hotfix.md                  ← fix→review (skip design)
@@ -247,6 +248,7 @@ All agents use `model: inherit`.
 | workflow | — | workflow-state | — (orchestrator) | Delegates to step commands |
 | workflow-designer | — | workflow file (not artifact) | architect, pragmatist | Iterative with user |
 | command-designer | — | command file (not artifact) | architect, pragmatist | Iterative with user |
+| help | — | — | — (direct conversation) | Context-aware guidance |
 
 ### Project Structure (after cortex-init)
 
