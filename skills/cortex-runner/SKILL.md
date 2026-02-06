@@ -70,4 +70,15 @@ agents: [(agents that participated)]
 
 Only write a journal entry if there's something meaningful to record. Don't create empty or boilerplate entries.
 
-**Important:** Do NOT write directly to `.cortex/memory/context/`. Context files are curated — they are maintained by humans or through an explicit curation process, never auto-written by command execution.
+## Step 5: Propose Context Updates
+
+After writing the journal entry, review what was learned and decide if any findings are worth preserving as long-term project context.
+
+If there are valuable findings, propose specific updates to `.cortex/memory/context/`:
+- For each proposal, show the **file path** and the **exact content** you would write
+- If the file already exists, show what you would add or change
+- Keep proposals concise — context files should be scannable, not essays
+
+Present all proposals to the user and ask for approval. Only write to `.cortex/memory/context/` if the user explicitly approves.
+
+If nothing from this run is worth adding to long-term context, say so and skip this step. Not every run produces lasting knowledge — that's fine.
