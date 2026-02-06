@@ -10,7 +10,7 @@ Use the **cortex-runner** skill to execute this template.
 ## Artifacts
 
 - produces: design
-- consumes: none
+- consumes: brainstorm (optional)
 
 ## Params
 
@@ -49,7 +49,9 @@ Design the feature "{{feature-name}}": {{feature-description}}
 
 ### Phase 1: Research & Discovery
 
-Launch the **researcher** and **scout** agents in parallel:
+**If a brainstorm artifact was loaded:** The brainstorm already explored the problem space, gathered perspectives, and documented ideas/decisions. Use the brainstorm's outcome, explored ideas, and open questions as the starting context. Skip the researcher and scout — their work is already captured. Jump to Phase 2 with the brainstorm findings as input.
+
+**If no brainstorm artifact:** Launch the **researcher** and **scout** agents in parallel:
 
 - **Researcher**: Find current best practices, library documentation, and patterns relevant to "{{feature-name}}". Report findings with sources.
 - **Scout**: Explore the existing codebase. Find related code, existing patterns, conventions, and integration points relevant to "{{feature-name}}". Report with file:line references.

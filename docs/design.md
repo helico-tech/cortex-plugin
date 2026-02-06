@@ -26,7 +26,7 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Each command consumes artifacts from prior commands and produces its own. This creates a traceable chain from design decisions through to validation.
 
-Additional standalone commands: `fix`, `refactor`, `tidy`, `audit`, `investigate`, `curate` — each with their own artifact contracts.
+Additional standalone commands: `brainstorm`, `fix`, `refactor`, `tidy`, `audit`, `investigate`, `curate` — each with their own artifact contracts.
 
 Workflows orchestrate multiple commands: `/cortex-team:workflow feature` chains design→plan→implement→review→validate with state tracking across sessions.
 
@@ -77,6 +77,7 @@ Artifacts are the backbone of the workflow. They are standardized outputs that c
 
 | Artifact | Produced By | Consumed By |
 |---|---|---|
+| brainstorm | brainstorm | design (optional) |
 | design | design, refactor | plan, implement, review, validate |
 | tasks | plan, fix (small) | implement, review, validate |
 | review | review | validate, implement (on fail) |
@@ -193,6 +194,7 @@ cortex-team-plugin/
     refactor.md                ← /cortex-team:refactor
     tidy.md                    ← /cortex-team:tidy
     audit.md                   ← /cortex-team:audit
+    brainstorm.md              ← /cortex-team:brainstorm
     investigate.md             ← /cortex-team:investigate
     curate.md                  ← /cortex-team:curate
     workflow.md                ← /cortex-team:workflow
@@ -230,7 +232,8 @@ All agents use `model: inherit`.
 
 | Command | Consumes | Produces | Agents | Collaboration |
 |---|---|---|---|---|
-| design | — | design | researcher, scout, architect, pragmatist, tester | Sequential with debate |
+| brainstorm | — | brainstorm | dynamic (any agent) | Facilitated workshop, loop |
+| design | brainstorm (opt) | design | researcher, scout, architect, pragmatist, tester | Sequential with debate |
 | plan | design | tasks | architect, implementer, tester | Sequential refinement |
 | implement | tasks, design | tasks (updated) | scout, implementer, tester | Iterative loop per task |
 | review | tasks, design | review | reviewer, architect | Parallel then merge |

@@ -40,9 +40,11 @@ Otherwise, for each artifact type listed:
 1. The command specifies a `feature-id` parameter (e.g. `0001-auth-flow`). Use it to construct the filename: `.cortex/artifacts/{feature-id}.{artifact-type}.md`
 2. Check if the file exists
 3. If it exists, read it and make its content available for the task section
-4. If it does NOT exist, **stop execution** and tell the user:
-   > "This command requires a `{artifact-type}` artifact for feature `{feature-id}`.
-   > Run the `{producing-command}` command first."
+4. If it does NOT exist:
+   - If the artifact is marked `(optional)` in the consumes declaration, skip it silently and note that it was not found
+   - If the artifact is **required** (not marked optional), **stop execution** and tell the user:
+     > "This command requires a `{artifact-type}` artifact for feature `{feature-id}`.
+     > Run the `{producing-command}` command first."
 
 Summarize what artifacts were loaded.
 
