@@ -24,9 +24,10 @@ Use the **cortex-runner** skill to execute this template.
 
 1. **cortex-team:architect** — Break the design into concrete implementation tasks with dependencies
 2. **cortex-team:implementer** — Review tasks for feasibility, estimate sizes, flag unclear requirements
-3. **cortex-team:tester** — Add testing tasks, ensure test strategy from design is covered in the plan
+3. **cortex-team:pragmatist** — Challenge task granularity and over-engineering in the plan
+4. **cortex-team:tester** — Add testing tasks, ensure test strategy from design is covered in the plan
 
-Collaboration style: **sequential refinement**. Architect creates initial breakdown. Implementer reviews for feasibility and adds detail. Tester ensures testing tasks are included. Each refines the previous output.
+Collaboration style: **sequential refinement with challenge**. Architect creates initial breakdown. Implementer reviews for feasibility. Pragmatist challenges granularity and over-engineering. Tester ensures testing tasks are included. Each refines the previous output.
 
 ## Task
 
@@ -55,6 +56,19 @@ Launch the **cortex-team:implementer** to review the task list:
 - Estimate size: small (< 30 min), medium (30-60 min), large (> 60 min)
 - Flag any unclear requirements that need resolving before implementation
 
+### Phase 2b: Pragmatist Challenge
+
+Launch the **cortex-team:pragmatist** to challenge the task list after feasibility review:
+
+- Are any tasks too granular? Would combining them reduce overhead without losing clarity?
+- Are there tasks that exist for "architectural purity" but don't deliver user value?
+- Are any tasks over-specified — prescribing implementation details that should be left to the implementer?
+- Could the dependency graph be simplified by merging sequential tasks that touch the same files?
+
+**Constraint:** Do not recommend merging tasks that cover different REQ-NNN items. Each requirement must remain independently trackable.
+
+Architect revises the task list based on valid challenges. If they disagree on a consolidation, keep the tasks separate.
+
 ### Phase 3: Test Coverage
 
 Launch the **cortex-team:tester** to review and add test tasks:
@@ -76,7 +90,7 @@ status: active
 command: plan
 created: YYYY-MM-DD
 source: {{feature-id}}.design.md
-agents: [architect, implementer, tester]
+agents: [architect, implementer, pragmatist, tester]
 ---
 
 # Tasks: {{feature-name}}

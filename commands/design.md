@@ -39,7 +39,7 @@ Use the **cortex-runner** skill to execute this template.
 4. **cortex-team:pragmatist** — Challenge the architect's design: is anything over-engineered? What's the simpler path?
 5. **cortex-team:tester** — Define test strategy: what to test, how, risk areas, edge cases, pass/fail criteria
 
-Collaboration style: **sequential with debate**. Researcher and scout gather context. Architect proposes. Pragmatist challenges. Architect revises. Tester defines test strategy. Final design incorporates all perspectives.
+Collaboration style: **sequential with three-way debate**. Researcher and scout gather context. Architect proposes. Pragmatist challenges. Tester challenges testability. Architect revises considering both. Tester finalizes test strategy. Final design incorporates all perspectives.
 
 ## Task
 
@@ -70,7 +70,14 @@ Then launch the **cortex-team:pragmatist** to challenge the architect's proposal
 - What's being built for hypothetical future requirements?
 - What's the delivery cost vs. value?
 
-The architect revises based on the pragmatist's valid challenges. If they disagree on something fundamental, present both positions to the user for a decision.
+Then launch the **cortex-team:tester** to challenge the architect's proposal for testability:
+
+- Can each component be tested in isolation?
+- Are the boundaries between components clean enough for meaningful unit tests?
+- Are there implicit dependencies that will make mocking painful?
+- Are there side effects or temporal coupling that make tests order-dependent?
+
+The architect revises considering BOTH the pragmatist's and tester's valid challenges. If they disagree on something fundamental, present all positions to the user for a decision.
 
 ### Phase 2b: Architecture Standards Check
 
@@ -81,14 +88,15 @@ If `context/architecture.md` was loaded in the project context, the **cortex-tea
 - If the design requires violating a standard for good reason, document the exception explicitly in the design decisions (DEC-NNN) with rationale for why the standard doesn't apply here
 - Do NOT silently violate standards — either comply or justify the exception
 
-### Phase 3: Test Strategy
+### Phase 3: Test Strategy Finalization
 
-Launch the **cortex-team:tester** with the revised design:
+The **cortex-team:tester** already influenced the design in Phase 2 by challenging testability. Now the tester defines the concrete test plan based on the revised design:
 
 - Define what to test and at what level (unit, integration, e2e)
 - Identify risk areas and edge cases
 - Define explicit pass/fail criteria for validation
 - Note attention points for the implementation team
+- Flag any testability concerns that survived from Phase 2 (architect chose not to address) as risks
 
 ### Phase 4: Produce Design Document
 

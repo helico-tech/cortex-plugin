@@ -81,6 +81,28 @@ When launching the next phase's agent:
 
 When producing the final artifact in step 5, read the scratch files to pull detailed findings. The scratch files are your working memory — the conversation is just coordination.
 
+#### Reaction round
+
+Some commands call for a **reaction round** after parallel or sequential phases. This is a lightweight cross-pollination step — not a full debate.
+
+**How it works:**
+
+1. Each participating agent receives the OTHER agents' bullet-point summaries (not full scratch files)
+2. Each agent answers three constrained questions:
+   - (a) **Contradictions?** — Does anything conflict with my own findings?
+   - (b) **Connections?** — Does anything reinforce, explain, or add nuance to my findings?
+   - (c) **Gaps?** — Is there anything important that nobody mentioned?
+3. Each agent produces 3-5 bullets max — this is not a second review
+4. The reaction outputs are written to scratch files alongside the original findings
+
+**When to use it:**
+- After parallel phases where agents worked independently on overlapping scope
+- Commands reference it by saying "Run a **reaction round** (see cortex-runner Step 4)"
+
+**When NOT to use it:**
+- After single-agent phases (nobody to react to)
+- When the next phase is already a debate or challenge (redundant)
+
 #### Clean up
 
 After the artifact is produced, delete the scratch files. They've served their purpose.

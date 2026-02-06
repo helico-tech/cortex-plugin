@@ -25,7 +25,7 @@ Use the **cortex-runner** skill to execute this template.
 1. **cortex-team:reviewer** — Find bugs, edge cases, convention violations, security issues
 2. **cortex-team:architect** — Evaluate structural integrity against the design decisions
 
-Collaboration style: **parallel then merge**. Both agents review independently, findings are merged and deduplicated.
+Collaboration style: **parallel then react then merge**. Both agents review independently, react to each other's summaries, then findings are merged and deduplicated.
 
 ## Task
 
@@ -53,9 +53,18 @@ Launch the **cortex-team:reviewer** and **cortex-team:architect** in parallel:
 - Are the integration points clean?
 - Any new technical debt introduced?
 
+### Phase 1b: Reaction Round
+
+Run a **reaction round** (see cortex-runner Step 4). Reviewer and architect see each other's bullet-point summaries and respond:
+
+- **Reviewer** reacts to architect's findings: Are any structural deviations also causing bugs? Do architectural concerns change the severity of code-level findings?
+- **Architect** reacts to reviewer's findings: Do any bugs indicate a deeper structural problem? Are convention violations symptoms of a design mismatch?
+
+This cross-reference catches findings that span both concerns — e.g., a bug that's also an architectural deviation, or a convention violation rooted in a structural shortcut.
+
 ### Phase 2: Merge & Classify Findings
 
-Merge findings from both agents. Deduplicate. Classify each finding:
+Merge findings from both agents, including reaction round additions. Deduplicate. Classify each finding:
 
 - **Critical**: Must fix. Bugs, security issues, design violations.
 - **Warning**: Should fix. Convention violations, missing error handling, structural concerns.

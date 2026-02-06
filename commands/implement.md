@@ -33,7 +33,7 @@ Use the **cortex-runner** skill to execute this template.
 2. **cortex-team:implementer** — Write the code
 3. **cortex-team:tester** — Write tests and verify implementation in-loop (not after)
 
-Collaboration style: **iterative loop per task**. For each task: scout explores → implementer codes → tester verifies → mark done or iterate.
+Collaboration style: **iterative loop per task**. For each task: scout explores → tester sets expectations → implementer codes (with expectations + scout context) → tester verifies → mark done or iterate.
 
 ## Task
 
@@ -54,12 +54,23 @@ Launch the **cortex-team:scout** to explore the relevant codebase area for this 
 - Understand existing patterns in those files
 - Report integration points and conventions to follow
 
+#### 1b. Pre-Implementation: Test Expectations
+
+Launch the **cortex-team:tester** to outline what they'll verify for this task before code is written:
+- What edge cases should the implementation handle? (3-5 bullets)
+- What observable behavior will they check?
+- What failure modes are they watching for?
+
+Write expectations to a scratch file: `.cortex/artifacts/{{feature-id}}.test-expectations-notes.md`. The implementer receives this file path alongside the scout's findings.
+
 #### 2. Implement
 
-Launch the **cortex-team:implementer** with the scout's findings, the task description, and the relevant design sections:
+Launch the **cortex-team:implementer** with the scout's findings, the tester's expectations, the task description, and the relevant design sections:
 - Write the code following existing patterns
 - Make minimal changes — only what the task requires
+- Keep the tester's edge cases and expectations in mind during implementation
 - Run existing tests to ensure nothing breaks
+- If the scout's findings are outdated or conflict with what the implementer observes in the actual code, note the discrepancy in a one-line comment in the task summary (e.g., "Scout reported X but actual code shows Y — proceeded with actual code"). This is a one-way note, not a back-and-forth.
 
 #### 3. In-Loop Verification
 

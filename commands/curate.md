@@ -35,7 +35,7 @@ Use the **cortex-runner** skill to execute this template.
 2. **cortex-team:pragmatist** — Challenge every finding: is this worth remembering? Is it already captured? Will it be useful?
 3. **cortex-team:writer** — Draft concrete edits to context files from the surviving findings
 
-Collaboration style: **sequential pipeline**. Scout extracts, pragmatist filters, writer synthesizes. Each stage narrows the funnel.
+Collaboration style: **sequential pipeline with challenge**. Scout extracts, pragmatist filters, writer synthesizes and can push back on pragmatist's cuts. Each stage narrows the funnel, but the writer acts as a check on over-aggressive filtering.
 
 ## Task
 
@@ -77,13 +77,20 @@ Launch the **cortex-team:pragmatist** with scout's findings:
 
 ### Phase 3: Synthesize
 
-Launch the **cortex-team:writer** with the filtered findings:
+Launch the **cortex-team:writer** with the filtered findings AND the pragmatist's full cut list:
+
 - For each **Add** finding, draft the exact text to append to the appropriate context file
   - If no appropriate file exists, propose a new context file with a clear name
   - Keep entries concise — one bullet point or short paragraph per finding
 - For each **Update** finding, draft the exact replacement text
 - For each **Contradiction**, present both sides and let the human decide
 - Match the voice and format of existing context files — don't introduce a new style
+
+**Pushback on pragmatist's cuts:** After drafting edits, review the pragmatist's cut list against existing context files. The writer can challenge up to 5 cut items where the removal would leave a gap — specifically:
+- "You cut X, but it contradicts/qualifies what's in `context/{file}.md`"
+- "You cut X, but it's the only evidence for a pattern referenced by Y in context"
+
+Challenged items are NOT auto-reinstated. They go to the human alongside the regular proposals, clearly marked as "Writer challenged pragmatist's cut — human decides."
 
 ### Phase 4: Produce Curation Report
 

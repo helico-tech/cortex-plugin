@@ -36,7 +36,7 @@ Use the **cortex-runner** skill to execute this template.
 3. **cortex-team:architect** — Evaluate structural integrity: coupling, cohesion, patterns, layering
 4. **cortex-team:tester** — Assess test coverage: what's tested, what's missing, what's flaky
 
-Collaboration style: **parallel assessment, then merge**. Scout maps first. Then reviewer, architect, and tester assess in parallel (each from their own angle). Findings are merged, deduplicated, and prioritized.
+Collaboration style: **parallel assessment, react, then merge**. Scout maps first. Then reviewer, architect, and tester assess in parallel (each from their own angle). They react to each other's summaries. Then findings are merged, deduplicated, and prioritized.
 
 ## Task
 
@@ -74,9 +74,19 @@ Launch the following agents in parallel, each focused on **{{audit-focus}}** (or
 - What edge cases are missing?
 - Where would a regression most likely slip through?
 
+### Phase 2b: Reaction Round
+
+Run a **reaction round** (see cortex-runner Step 4). Reviewer, architect, and tester see each other's bullet-point summaries and respond:
+
+- **Reviewer** reacts: Do structural issues (architect) explain code quality problems? Do test gaps (tester) align with the riskiest code areas?
+- **Architect** reacts: Do quality hotspots (reviewer) indicate structural decay? Do untested areas (tester) sit on critical dependency paths?
+- **Tester** reacts: Do code quality findings (reviewer) suggest areas needing deeper test coverage? Do structural issues (architect) make certain areas harder to test?
+
+Findings that combine across agents get elevated in severity — e.g., a complex hotspot (reviewer) on a critical path (architect) with no tests (tester) is worse than any single finding alone.
+
 ### Phase 3: Merge & Prioritize
 
-Merge all findings. Deduplicate. Classify each:
+Merge all findings, including reaction round additions. Deduplicate. Classify each:
 
 - **Critical**: Active risk — bugs, security holes, untested critical paths
 - **Warning**: Accumulating debt — growing complexity, missing tests, coupling

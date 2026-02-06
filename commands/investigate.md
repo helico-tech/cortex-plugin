@@ -32,7 +32,7 @@ Use the **cortex-runner** skill to execute this template.
 1. **cortex-team:scout** — Map what exists in the codebase related to this topic
 2. **cortex-team:researcher** — Research external sources: documentation, best practices, alternatives
 
-Collaboration style: **parallel then merge**. Scout and researcher work independently, findings are merged into a single report.
+Collaboration style: **iterative exchange (2-3 rounds)**. Scout and researcher start independently, then cross-pollinate findings for 1-2 additional rounds before merging.
 
 ## Task
 
@@ -58,13 +58,28 @@ Launch **cortex-team:scout** and **cortex-team:researcher** in parallel (based o
 - Find relevant libraries, tools, or frameworks
 - Report with sources — facts only, no recommendations
 
+### Phase 1b: Cross-Pollination (1-2 rounds)
+
+After the initial parallel pass, each agent reads the other's bullet-point summary and does a targeted follow-up. Both agents run in parallel per round (they read summaries, not react to reactions).
+
+**Round 1** (always runs):
+- **Scout** receives researcher's summary → checks if external findings (libraries, patterns, best practices) already exist in the codebase, or if the codebase contradicts external recommendations
+- **Researcher** receives scout's summary → finds external context for codebase patterns (are they standard? deprecated? have known issues?)
+
+**Round 2** (only if Round 1 produced contradictions or new questions):
+- Same structure, focused on resolving contradictions and filling gaps from Round 1
+- If Round 1 findings were consistent and complete, skip Round 2
+
+Each round's output is written to scratch files. Agents read summaries from the previous round, not full scratch files.
+
 ### Phase 2: Merge Findings
 
-Combine findings from both agents into a coherent report. Identify:
+Combine findings from all rounds into a coherent report. Identify:
 - What we already have (codebase findings)
 - What's available externally (research findings)
-- Where the two overlap or conflict
-- Knowledge gaps — what we still don't know
+- Where findings **reinforced** each other across rounds (mark as higher confidence)
+- Where findings **contradicted** each other (mark as uncertain — present both sides)
+- Knowledge gaps — what we still don't know after cross-pollination
 
 ### Phase 3: Produce Investigation Report
 
