@@ -1,6 +1,6 @@
 ---
 name: cortex-runner
-description: "Shared execution flow for all cortex-team commands. Handles parameter collection, memory loading, agent execution, and memory storage. Do NOT invoke this skill directly — it is used internally by cortex-team commands."
+description: "Shared execution flow for all cortex-team commands. Handles parameter collection, memory loading, artifact management, agent execution, and memory storage. Do NOT invoke this skill directly — it is used internally by cortex-team commands."
 ---
 
 # Cortex Runner
@@ -29,27 +29,89 @@ This is the curated project knowledge — conventions, domain model, key decisio
 
 After loading, briefly summarize what memory was found so the user knows what context is available.
 
-## Step 3: Execute
+## Step 3: Load Consumed Artifacts
+
+Read the command's `## Artifacts` section. Check the `consumes:` declaration.
+
+If `consumes: none`, skip this step.
+
+Otherwise, for each artifact type listed:
+
+1. The command specifies a `feature-id` parameter (e.g. `0001-auth-flow`). Use it to construct the filename: `.cortex/artifacts/{feature-id}.{artifact-type}.md`
+2. Check if the file exists
+3. If it exists, read it and make its content available for the task section
+4. If it does NOT exist, **stop execution** and tell the user:
+   > "This command requires a `{artifact-type}` artifact for feature `{feature-id}`.
+   > Run the `{producing-command}` command first."
+
+Summarize what artifacts were loaded.
+
+## Step 4: Execute
 
 Hand off to the calling command's task section. The command defines:
-- Which agent(s) to launch
+- Which agent(s) to launch and in what order
 - What collaboration style to use (if multiple agents)
-- The actual task prompt with `{{param}}` placeholders replaced and memory injected
+- The actual task prompt with `{{param}}` placeholders replaced, memory injected, and consumed artifacts injected
 
-## Step 4: Store Memory
+## Step 5: Produce Artifact
+
+If the command declares `produces:` in its `## Artifacts` section, write the artifact file.
+
+### Feature ID assignment
+
+If this command CREATES a new feature (i.e. it has no `consumes:` and `produces: design`):
+
+1. List all existing `.design.md` files in `.cortex/artifacts/`
+2. Extract the highest 4-digit prefix (e.g. `0003` from `0003-notifications.design.md`)
+3. Increment by 1 (→ `0004`)
+4. Combine with the feature slug from the params: `0004-{feature-slug}`
+5. This becomes the `feature-id` for all downstream commands
+
+If this command is CONTINUING an existing feature (i.e. it `consumes:` a prior artifact), use the same `feature-id` from the consumed artifact's frontmatter.
+
+### Artifact file format
+
+Write to: `.cortex/artifacts/{feature-id}.{artifact-type}.md`
+
+Every artifact MUST have this frontmatter:
+
+```yaml
+---
+artifact: {artifact-type}
+feature: {feature-slug}
+feature-id: {NNNN-feature-slug}
+status: active
+command: {command-name}
+created: YYYY-MM-DD
+source: {consumed-artifact-filename or null}
+agents: [{list of agents that participated}]
+---
+```
+
+The body structure is defined by the command — each command specifies the exact template for its artifact.
+
+### Validation
+
+After writing the artifact, verify:
+1. The file exists at the expected path
+2. The frontmatter contains all required fields (`artifact`, `feature`, `feature-id`, `status`, `command`, `created`, `agents`)
+3. The body follows the structure defined in the command
+
+If validation fails, fix the artifact before proceeding.
+
+## Step 6: Write Journal
 
 After execution completes, write a journal entry to `.cortex/memory/journal/`.
 
-**Journal entry format:**
-
-File path: `.cortex/memory/journal/YYYY-MM/YYYY-MM-DD-{topic}-{command-name}.md`
+File path: `.cortex/memory/journal/YYYY-MM/YYYY-MM-DD-{feature-id}-{command-name}.md`
 
 ```markdown
 ---
 date: YYYY-MM-DD
 command: (command that was run)
-topic: (feature or area worked on)
+feature-id: (feature-id)
 agents: [(agents that participated)]
+artifact-produced: (filename of artifact produced, or none)
 ---
 
 ## Summary
@@ -70,7 +132,7 @@ agents: [(agents that participated)]
 
 Only write a journal entry if there's something meaningful to record. Don't create empty or boilerplate entries.
 
-## Step 5: Propose Context Updates
+## Step 7: Propose Context Updates
 
 After writing the journal entry, review what was learned and decide if any findings are worth preserving as long-term project context.
 
