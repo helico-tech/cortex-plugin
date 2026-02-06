@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (10 + init), artifacts that chain between commands, and structured memory.
+`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (12 + init), workflows that orchestrate commands, artifacts that chain between commands, and structured memory.
 
 See `docs/design.md` for the full design document with rationale.
 
@@ -20,7 +20,8 @@ claude --plugin-dir /Users/avanwieringen/Development/helico/cortex-team-plugin
 ```
 .claude-plugin/plugin.json        ← manifest
 agents/                            ← 8 role-based agent definitions (.md)
-commands/                          ← 11 slash commands (.md)
+commands/                          ← 13 slash commands (.md)
+workflows/                         ← plugin-level workflow definitions (.md)
 skills/cortex-runner/SKILL.md      ← shared 7-step execution flow
 docs/design.md                     ← design document
 ```
@@ -36,6 +37,8 @@ Every command delegates to the `cortex-runner` skill for shared ceremony:
 6. Write journal to `.cortex/memory/journal/`
 7. Propose context updates (human approves)
 
+Exception: `workflow` command is its own orchestrator, doesn't use cortex-runner.
+
 ## Core Flow
 
 ```
@@ -44,13 +47,19 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Standalone: `fix` (triage + fix or route to design), `refactor` (produces design), `tidy` (find-fix-verify), `audit` (read-only health report), `curate` (journals → context updates)
 
+Orchestration: `workflow` (run a multi-step flow), `workflow-designer` (create project workflows)
+
+## Workflows
+
+Plugin workflows live in `workflows/`. Project workflows live in `.cortex/workflows/`. Name collisions are errors. Execution mode (auto-chain, guided, reference) is a runtime param. State is tracked in a `workflow-state` artifact.
+
 ## Agents
 
 scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer — all `model: inherit`. Every command uses teams, never solo agents.
 
 ## Artifacts
 
-Stored at `.cortex/artifacts/{NNNN-feature-slug}.{artifact-type}.md` with required YAML frontmatter. Types: design, tasks, review, validation, tidy-report, audit, curation.
+Stored at `.cortex/artifacts/{NNNN-feature-slug}.{artifact-type}.md` with required YAML frontmatter. Types: design, tasks, review, validation, tidy-report, audit, curation, workflow-state.
 
 ## Git Workflow
 

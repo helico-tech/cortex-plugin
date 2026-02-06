@@ -28,6 +28,8 @@ Each command consumes artifacts from prior commands and produces its own. This c
 
 Additional standalone commands: `fix`, `refactor`, `tidy`, `audit`, `curate` — each with their own artifact contracts.
 
+Workflows orchestrate multiple commands: `/cortex-team:workflow feature` chains design→plan→implement→review→validate with state tracking across sessions.
+
 ## Design Decisions
 
 ### Commands over prompt-templates directory
@@ -82,6 +84,7 @@ Artifacts are the backbone of the workflow. They are standardized outputs that c
 | tidy-report | tidy | — |
 | audit | audit | — |
 | curation | curate | — |
+| workflow-state | workflow | — |
 
 **Frontmatter contract** — every artifact MUST have:
 ```yaml
@@ -123,6 +126,26 @@ We evaluated 5 memory categories (conventions, domain-model, decisions, lessons-
 **Why context is human-curated:**
 Agent-written memory that auto-loads is a bloat machine. Instead, agents propose context updates after each run (step 7), and the human approves. This keeps context small, relevant, and trusted.
 
+### Workflow system
+
+Workflows compose commands into multi-step flows with branching, state tracking, and configurable execution modes.
+
+**Two levels:**
+- **Plugin workflows** — ship with cortex-team in `workflows/`. Standard flows everyone gets.
+- **Project workflows** — live in `.cortex/workflows/`. Project-specific compositions created via `/cortex-team:workflow-designer`.
+- **Name collisions are errors** — a project workflow cannot shadow a plugin workflow of the same name.
+
+**Execution mode is a runtime param**, not baked into the definition. The same workflow can be:
+- `auto-chain` — run all steps automatically as subagents, only stop for params or blockers
+- `guided` — present each step, user confirms before running
+- `reference` — show what's next, user invokes commands manually
+
+**State is externalized** in a `workflow-state` artifact. This makes workflows survive across sessions — if a session dies or the user comes back tomorrow, the workflow picks up from `current-step`.
+
+**Transitions are artifact-driven:** Steps with `check: verdict` read the produced artifact's frontmatter to determine pass/fail. Steps without verdicts use `on-complete` (succeed if artifact produced). This means the workflow system doesn't need its own judgment — it trusts the artifacts.
+
+**The workflow-designer command** guides users through creating project workflows collaboratively. Architect proposes structure, pragmatist challenges unnecessary steps, user decides. Validates artifact chains (every consumed artifact has a producing step upstream) and prevents infinite loops without exits.
+
 ### No config.json
 
 We initially had a `.cortex/config.json` for project name, description, and tech stack. Killed it — that information already lives in `package.json`, `README.md`, and `CLAUDE.md`. Duplicated context goes stale.
@@ -160,6 +183,10 @@ cortex-team-plugin/
     tidy.md                    ← /cortex-team:tidy
     audit.md                   ← /cortex-team:audit
     curate.md                  ← /cortex-team:curate
+    workflow.md                ← /cortex-team:workflow
+    workflow-designer.md       ← /cortex-team:workflow-designer
+  workflows/
+    feature.md                 ← standard feature workflow
   skills/
     cortex-runner/
       SKILL.md                 ← shared 7-step execution flow
@@ -196,6 +223,8 @@ All agents use `model: inherit`.
 | tidy | — | tidy-report | scout, reviewer, implementer, tester | Find-fix-verify loop |
 | audit | — | audit | scout, reviewer, architect, tester | Parallel assessment, merge |
 | curate | — | curation | scout, pragmatist, writer | Sequential pipeline |
+| workflow | — | workflow-state | — (orchestrator) | Delegates to step commands |
+| workflow-designer | — | workflow file (not artifact) | architect, pragmatist | Iterative with user |
 
 ### Project Structure (after cortex-init)
 
@@ -214,6 +243,9 @@ any-project/
       0001-auth-flow.tasks.md
       0001-auth-flow.review.md
       0001-auth-flow.validation.md
+      0001-auth-flow.workflow-state.md
+    workflows/                 ← project-specific workflow definitions
+      hotfix.md                ← (created via workflow-designer)
 ```
 
 ### Command Anatomy
@@ -307,7 +339,6 @@ Designed the authentication flow for the dashboard.
 
 These are explicitly deferred, not forgotten:
 
-- **Workflows** — composing multiple commands into multi-step orchestrated sequences
 - **Feature-scoping for memory** — controlled vocabulary for feature names, scoped loading
 - **Size awareness** — warn when context/ exceeds a token threshold
 - **Guard-rails** — commands checking if cortex is properly initialized before running

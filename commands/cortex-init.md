@@ -18,6 +18,7 @@ Initialize the `.cortex/` directory structure in the current project.
     context/
     journal/
   artifacts/
+  workflows/
 ```
 
 3. Create a `.gitkeep` file in each empty subdirectory so they are tracked by git.
