@@ -20,7 +20,7 @@ description: Use this agent when you need to explore and map a codebase before m
   </commentary>
   </example>
 
-model: sonnet
+model: inherit
 color: cyan
 tools: Read, Grep, Glob, LS, WebSearch
 ---

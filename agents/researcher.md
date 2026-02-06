@@ -20,7 +20,7 @@ description: Use this agent when you need current documentation, API references,
   </commentary>
   </example>
 
-model: sonnet
+model: inherit
 color: cyan
 tools: WebSearch, WebFetch, Read, Grep, Glob
 ---

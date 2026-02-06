@@ -20,7 +20,7 @@ description: Use this agent when code needs to be written, modified, or refactor
   </commentary>
   </example>
 
-model: sonnet
+model: inherit
 color: green
 tools: Read, Write, Edit, Grep, Glob, LS, Bash, WebSearch
 ---

@@ -20,7 +20,7 @@ description: Use this agent when structural decisions need to be made — system
   </commentary>
   </example>
 
-model: sonnet
+model: inherit
 color: blue
 tools: Read, Grep, Glob, LS
 ---

@@ -20,7 +20,7 @@ description: Use this agent when test strategy needs to be designed or tests nee
   </commentary>
   </example>
 
-model: sonnet
+model: inherit
 color: magenta
 tools: Read, Write, Edit, Grep, Glob, LS, Bash
 ---
