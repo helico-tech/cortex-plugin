@@ -1,6 +1,6 @@
 ---
 name: maintenance
-description: Codebase gardening — audit the health, tidy up what's easy, capture learnings into context memory
+description: Codebase gardening — audit health, check standards conformance, tidy up what's easy, capture learnings into context memory
 ---
 
 # Maintenance Workflow
@@ -27,6 +27,12 @@ description: Codebase gardening — audit the health, tidy up what's easy, captu
 - command: audit
 - params:
   - audit-focus: all
+- on-complete: step:conform
+
+### step:conform
+- command: conform
+- params:
+  - conform-focus: both
 - on-complete: step:tidy
 
 ### step:tidy

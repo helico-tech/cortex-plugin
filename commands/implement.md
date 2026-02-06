@@ -69,6 +69,17 @@ Launch the **tester**:
 - If tests fail: report what failed and loop back to step 2 with the failure details
 - If tests pass: confirm the task is complete
 
+#### 3b. Standards Compliance Check
+
+If `context/idioms.md` or `context/architecture.md` were loaded in the project context, launch the **scout** to check the files changed in this task:
+
+- Check changed files against IDIOM-NNN rules (naming, error handling, patterns)
+- Check new imports/dependencies against ARCH-NNN rules (boundary violations, layer crossings)
+- If violations are found:
+  - For `must`-level violations: loop back to step 2 — implementer fixes before proceeding
+  - For `should`-level violations: flag them, implementer fixes if straightforward, otherwise note for later
+  - For `may`-level violations: note in the task summary, do not block progress
+
 #### 4. Update Task Status
 
 After each task is verified:

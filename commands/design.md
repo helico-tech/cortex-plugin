@@ -72,6 +72,15 @@ Then launch the **pragmatist** to challenge the architect's proposal:
 
 The architect revises based on the pragmatist's valid challenges. If they disagree on something fundamental, present both positions to the user for a decision.
 
+### Phase 2b: Architecture Standards Check
+
+If `context/architecture.md` was loaded in the project context, the **architect** verifies the revised design against the documented ARCH-NNN standards:
+
+- For each ARCH-NNN rule: does this design comply?
+- If the design violates a standard, flag it and revise the design to comply
+- If the design requires violating a standard for good reason, document the exception explicitly in the design decisions (DEC-NNN) with rationale for why the standard doesn't apply here
+- Do NOT silently violate standards — either comply or justify the exception
+
 ### Phase 3: Test Strategy
 
 Launch the **tester** with the revised design:

@@ -23,10 +23,11 @@ Use the **cortex-runner** skill to execute this template.
   - type: choice
   - question: "What should the focus be?"
   - options:
-    - `all` — Everything: naming, structure, error handling, types, tests
+    - `all` — Everything: naming, structure, error handling, types, tests, standards
     - `readability` — Naming, comments, structure, clarity
     - `robustness` — Error handling, edge cases, validation, types
     - `consistency` — Match conventions used elsewhere in the codebase
+    - `standards` — Fix violations of documented coding standards (idioms and architecture)
 
 ## Agents
 
@@ -52,7 +53,9 @@ Launch the **scout**:
 
 Launch the **reviewer** with scout's findings:
 - Find code quality issues matching the **{{tidy-focus}}** focus
+- If {{tidy-focus}} is `all` or `standards`, and `context/idioms.md` is loaded: include `should`-level and `may`-level idiom violations in the findings (leave `must`-level to the user — those may need design decisions)
 - Classify each issue: what it is, where it is, how to fix it
+- If the issue violates a documented standard, reference it (IDIOM-NNN)
 - Order by impact: biggest improvements first
 - Do NOT suggest architectural changes — tidy is cosmetic surgery, not reconstruction
 

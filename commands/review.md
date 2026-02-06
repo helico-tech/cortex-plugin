@@ -43,11 +43,13 @@ Launch the **reviewer** and **architect** in parallel:
 - Bugs, logic errors, missed edge cases
 - Security issues (injection, auth bypass, data exposure)
 - Convention violations (naming, error handling, patterns)
+- If `context/idioms.md` is loaded: check against IDIOM-NNN rules specifically — reference the standard ID in any finding (e.g., "violates IDIOM-003")
 - Specific, line-level findings with concrete fix suggestions
 
 **Architect** focus:
 - Does the implementation match the design decisions?
 - Are there structural deviations from the agreed architecture?
+- If `context/architecture.md` is loaded: check against ARCH-NNN rules specifically — reference the standard ID in any finding (e.g., "violates ARCH-002")
 - Are the integration points clean?
 - Any new technical debt introduced?
 
@@ -96,6 +98,7 @@ Tasks: {{feature-id}}.tasks.md
 - **Problem**: (specific description)
 - **Fix**: (concrete suggestion)
 - **Design ref**: (DEC-NNN or REQ-NNN if relevant)
+- **Standard ref**: (ARCH-NNN or IDIOM-NNN if this violates a documented standard, omit if not applicable)
 
 ## Warnings
 
