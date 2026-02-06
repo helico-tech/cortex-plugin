@@ -90,12 +90,37 @@ agents: [{list of agents that participated}]
 
 The body structure is defined by the command — each command specifies the exact template for its artifact.
 
+### Numbering Convention
+
+**This is mandatory.** All items in artifacts MUST use sequential numbered prefixes as defined by the command template. This is not optional formatting — it is a hard requirement for cross-referencing between artifacts.
+
+Common numbering schemes used across commands:
+- **REQ-001, REQ-002, ...** — Requirements (in design artifacts)
+- **DEC-001, DEC-002, ...** — Decisions (in design artifacts)
+- **TEST-001, TEST-002, ...** — Test cases (in design artifacts)
+- **RISK-001, RISK-002, ...** — Risks (in design artifacts)
+- **TASK-0001, TASK-0002, ...** — Tasks (in task artifacts, 4-digit)
+- **FINDING-001, FINDING-002, ...** — Review findings (in review artifacts)
+- **AUDIT-001, AUDIT-002, ...** — Audit findings (in audit artifacts)
+- **FIX-001, FIX-002, ...** — Applied fixes (in tidy-report artifacts)
+- **SKIP-001, SKIP-002, ...** — Skipped fixes (in tidy-report artifacts)
+
+These IDs are how artifacts cross-reference each other. A task references `REQ-001` from the design. A test covers `REQ-002`. A review finding references `DEC-003`. Without numbered IDs, the traceability chain breaks.
+
+**Rules:**
+- Always start at 001 (or 0001 for TASK)
+- Always sequential, no gaps
+- Always use the exact prefix defined in the command template
+- When appending items to an existing artifact (e.g. review adds tasks), continue from the last number
+
 ### Validation
 
 After writing the artifact, verify:
 1. The file exists at the expected path
 2. The frontmatter contains all required fields (`artifact`, `feature`, `feature-id`, `status`, `command`, `created`, `agents`)
 3. The body follows the structure defined in the command
+4. **All items use the correct numbering prefixes** (REQ-NNN, TASK-NNNN, etc.)
+5. **Numbering is sequential with no gaps**
 
 If validation fails, fix the artifact before proceeding.
 
