@@ -55,6 +55,8 @@ Run each step as a subagent using the Task tool:
 
 If a step errors (not verdict-fail, but actual errors), pause and ask the user what to do.
 
+**Context management:** After each step completes, summarize the result in 2-3 lines and discard the step's detail from your working context. The artifact file has the full record — you don't need to carry it. Read the workflow-state artifact at the start of each step to know where you are, not your memory of previous steps.
+
 ### guided
 
 For each step:

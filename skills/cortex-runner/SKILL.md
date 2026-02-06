@@ -55,6 +55,15 @@ Hand off to the calling command's task section. The command defines:
 - What collaboration style to use (if multiple agents)
 - The actual task prompt with `{{param}}` placeholders replaced, memory injected, and consumed artifacts injected
 
+### Context management between phases
+
+Commands have multiple phases, each spawning agents. To prevent context from bloating:
+
+- **After each phase**, summarize the agent's findings in 3-5 bullet points before moving to the next phase
+- **Pass summaries forward**, not full agent output — the next agent gets the summary plus the original task context
+- **The artifact has the detail** — when producing the artifact in step 5, pull from agent outputs (which are still available via the Task tool results), not from the running conversation summary
+- This keeps the main conversation lean while the artifact captures everything
+
 ## Step 5: Produce Artifact
 
 If the command declares `produces:` in its `## Artifacts` section, write the artifact file.

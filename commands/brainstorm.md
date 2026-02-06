@@ -87,6 +87,9 @@ When pulling in an agent, use the Task tool to spawn them. Give them the convers
 - "Let's get the pragmatist's opinion" → pull in pragmatist
 - Honor these requests immediately
 
+**Context management:**
+When pulling in agents, summarize their response in 2-3 key takeaways for the conversation. Don't carry the agent's full output — present the takeaway to the user and move on. The brainstorm artifact at the end will capture everything in structured form.
+
 **Track what's emerging:**
 Throughout the conversation, mentally track:
 - Ideas that are gaining traction (potential IDEA-NNN entries)
