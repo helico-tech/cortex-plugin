@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (13 + init), workflows that orchestrate commands, artifacts that chain between commands, and structured memory.
+`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (14 + init), workflows that orchestrate commands, artifacts that chain between commands, and structured memory.
 
 See `docs/design.md` for the full design document with rationale.
 
@@ -20,7 +20,7 @@ claude --plugin-dir /Users/avanwieringen/Development/helico/cortex-team-plugin
 ```
 .claude-plugin/plugin.json        ← manifest
 agents/                            ← 8 role-based agent definitions (.md)
-commands/                          ← 14 slash commands (.md)
+commands/                          ← 15 slash commands (.md)
 workflows/                         ← plugin-level workflow definitions (.md)
 skills/cortex-runner/SKILL.md      ← shared 7-step execution flow
 docs/design.md                     ← design document
@@ -47,7 +47,9 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Standalone: `fix` (triage + fix or route to design), `refactor` (produces design), `tidy` (find-fix-verify), `audit` (read-only health report), `investigate` (fact-finding), `curate` (journals → context updates)
 
-Orchestration: `workflow` (run a multi-step flow), `workflow-designer` (create project workflows)
+Orchestration: `workflow` (run a multi-step flow), `workflow-designer` (create project workflows), `command-designer` (create project commands)
+
+Project commands live in `.claude/commands/` (native Claude Code discovery). Use `/cortex-team:command-designer` to create them following cortex conventions.
 
 ## Workflows
 

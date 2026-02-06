@@ -147,6 +147,16 @@ Workflows compose commands into multi-step flows with branching, state tracking,
 
 **The workflow-designer command** guides users through creating project workflows collaboratively. Architect proposes structure, pragmatist challenges unnecessary steps, user decides. Validates artifact chains (every consumed artifact has a producing step upstream) and prevents infinite loops without exits.
 
+### Project-specific commands
+
+Projects can define their own commands in `.claude/commands/` — Claude Code's native project-level command directory. These commands are auto-discovered and show up as regular slash commands (e.g., `/deploy-staging`).
+
+Project commands can follow cortex conventions by referencing the cortex-runner skill and cortex-team agents, as long as the plugin is installed. This means project commands get the full 7-step flow (params, memory, artifacts, agents, journal, context updates) without reinventing anything.
+
+**Why `.claude/commands/` and not `.cortex/commands/`:** Claude Code already has native project-level command discovery. Building our own would be a worse version of what exists. The cortex-team plugin provides the *framework* (agents, runner, artifacts); the native system provides *discovery*.
+
+**The command-designer command** (`/cortex-team:command-designer`) guides users through creating project commands that follow cortex conventions: proper agent teams, artifact contracts, phased tasks, and cortex-runner integration.
+
 ### No config.json
 
 We initially had a `.cortex/config.json` for project name, description, and tech stack. Killed it — that information already lives in `package.json`, `README.md`, and `CLAUDE.md`. Duplicated context goes stale.
@@ -187,6 +197,7 @@ cortex-team-plugin/
     curate.md                  ← /cortex-team:curate
     workflow.md                ← /cortex-team:workflow
     workflow-designer.md       ← /cortex-team:workflow-designer
+    command-designer.md        ← /cortex-team:command-designer
   workflows/
     feature.md                 ← design→plan→implement→review→validate
     hotfix.md                  ← fix→review (skip design)
@@ -232,6 +243,7 @@ All agents use `model: inherit`.
 | curate | — | curation | scout, pragmatist, writer | Sequential pipeline |
 | workflow | — | workflow-state | — (orchestrator) | Delegates to step commands |
 | workflow-designer | — | workflow file (not artifact) | architect, pragmatist | Iterative with user |
+| command-designer | — | command file (not artifact) | architect, pragmatist | Iterative with user |
 
 ### Project Structure (after cortex-init)
 
