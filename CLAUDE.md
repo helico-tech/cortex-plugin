@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (9 + init), artifacts that chain between commands, and structured memory.
+`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (10 + init), artifacts that chain between commands, and structured memory.
 
 See `docs/design.md` for the full design document with rationale.
 
@@ -20,7 +20,7 @@ claude --plugin-dir /Users/avanwieringen/Development/helico/cortex-team-plugin
 ```
 .claude-plugin/plugin.json        ← manifest
 agents/                            ← 8 role-based agent definitions (.md)
-commands/                          ← 10 slash commands (.md)
+commands/                          ← 11 slash commands (.md)
 skills/cortex-runner/SKILL.md      ← shared 7-step execution flow
 docs/design.md                     ← design document
 ```
@@ -42,7 +42,7 @@ Every command delegates to the `cortex-runner` skill for shared ceremony:
 design → plan → implement → review ←→ implement (feedback loop) → validate
 ```
 
-Standalone: `fix` (triage + fix or route to design), `refactor` (produces design), `tidy` (find-fix-verify), `audit` (read-only health report)
+Standalone: `fix` (triage + fix or route to design), `refactor` (produces design), `tidy` (find-fix-verify), `audit` (read-only health report), `curate` (journals → context updates)
 
 ## Agents
 
@@ -50,7 +50,7 @@ scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer 
 
 ## Artifacts
 
-Stored at `.cortex/artifacts/{NNNN-feature-slug}.{artifact-type}.md` with required YAML frontmatter. Types: design, tasks, review, validation, tidy-report, audit.
+Stored at `.cortex/artifacts/{NNNN-feature-slug}.{artifact-type}.md` with required YAML frontmatter. Types: design, tasks, review, validation, tidy-report, audit, curation.
 
 ## Git Workflow
 

@@ -26,7 +26,7 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Each command consumes artifacts from prior commands and produces its own. This creates a traceable chain from design decisions through to validation.
 
-Additional standalone commands: `fix`, `refactor`, `tidy`, `audit` — each with their own artifact contracts.
+Additional standalone commands: `fix`, `refactor`, `tidy`, `audit`, `curate` — each with their own artifact contracts.
 
 ## Design Decisions
 
@@ -81,6 +81,7 @@ Artifacts are the backbone of the workflow. They are standardized outputs that c
 | validation | validate | — |
 | tidy-report | tidy | — |
 | audit | audit | — |
+| curation | curate | — |
 
 **Frontmatter contract** — every artifact MUST have:
 ```yaml
@@ -158,6 +159,7 @@ cortex-team-plugin/
     refactor.md                ← /cortex-team:refactor
     tidy.md                    ← /cortex-team:tidy
     audit.md                   ← /cortex-team:audit
+    curate.md                  ← /cortex-team:curate
   skills/
     cortex-runner/
       SKILL.md                 ← shared 7-step execution flow
@@ -193,6 +195,7 @@ All agents use `model: inherit`.
 | refactor | — | design | scout, architect, pragmatist, tester | Sequential with debate |
 | tidy | — | tidy-report | scout, reviewer, implementer, tester | Find-fix-verify loop |
 | audit | — | audit | scout, reviewer, architect, tester | Parallel assessment, merge |
+| curate | — | curation | scout, pragmatist, writer | Sequential pipeline |
 
 ### Project Structure (after cortex-init)
 
@@ -306,6 +309,5 @@ These are explicitly deferred, not forgotten:
 
 - **Workflows** — composing multiple commands into multi-step orchestrated sequences
 - **Feature-scoping for memory** — controlled vocabulary for feature names, scoped loading
-- **Curation command** — `/cortex-team:curate` that reads journal entries and proposes context updates in bulk
 - **Size awareness** — warn when context/ exceeds a token threshold
 - **Guard-rails** — commands checking if cortex is properly initialized before running
