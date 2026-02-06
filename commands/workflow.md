@@ -17,12 +17,91 @@ This command orchestrates multi-step workflows. It does NOT use the cortex-runne
 
 ## Finding the Workflow Definition
 
-1. Search `.cortex/workflows/{workflow-name}.md` in the project (project workflows)
-2. Search this plugin's `workflows/{workflow-name}.md` (plugin workflows)
-3. If found in BOTH locations, **stop with an error**: "Workflow '{workflow-name}' exists in both the plugin and the project. Project workflows must use unique names to avoid shadowing."
-4. If found in neither, list available workflows from both locations and ask the user to pick one.
+1. Check if `.cortex/workflows/{workflow-name}.md` exists (project workflow)
+2. Check if the name matches a built-in workflow below
+3. If found in BOTH, **stop with an error**: "Workflow '{workflow-name}' exists in both the plugin and the project. Project workflows must use unique names to avoid shadowing."
+4. If found in neither, list available workflows and ask the user to pick one.
 
-**Available plugin workflows:** `feature`, `hotfix`, `refactor`, `maintenance`, `spike`
+**If it's a project workflow**, read the definition from `.cortex/workflows/{workflow-name}.md`.
+
+**If it's a built-in workflow**, use the definition directly from below — no file search needed.
+
+---
+
+### Built-in: feature
+
+Full feature development — design through validation with review feedback loop.
+
+**Params:**
+- **execution-mode**: choice — `auto-chain` | `guided` | `reference`
+- **user-involvement**: choice — `hands-off` | `during-unknowns` (default) | `every-step` — inject-into: [design, implement]
+
+**Steps:**
+1. `step:design` → command: design → on-complete: step:plan
+2. `step:plan` → command: plan → on-complete: step:implement
+3. `step:implement` → command: implement (task-selection: all-remaining) → on-complete: step:review
+4. `step:review` → command: review → check: verdict → on-pass: step:validate → on-fail: step:implement
+5. `step:validate` → command: validate → check: verdict → on-pass: done → on-fail: step:implement
+
+---
+
+### Built-in: hotfix
+
+Fast bug fix — triage and fix, then review. Skips design and planning.
+
+**Params:**
+- **execution-mode**: choice — `auto-chain` | `guided` | `reference`
+
+**Steps:**
+1. `step:fix` → command: fix → check: triage-result → on-complete: step:review → on-needs-design: done (tell user to use `/cortex-team:workflow feature` instead)
+2. `step:review` → command: review → check: verdict → on-pass: done → on-fail: step:fix
+
+---
+
+### Built-in: refactor
+
+Investigate, design the refactor, then plan → implement → review → validate.
+
+**Params:**
+- **execution-mode**: choice — `auto-chain` | `guided` | `reference`
+- **user-involvement**: choice — `hands-off` | `during-unknowns` (default) | `every-step` — inject-into: [refactor, implement]
+
+**Steps:**
+1. `step:refactor` → command: refactor → on-complete: step:plan
+2. `step:plan` → command: plan → on-complete: step:implement
+3. `step:implement` → command: implement (task-selection: all-remaining) → on-complete: step:review
+4. `step:review` → command: review → check: verdict → on-pass: step:validate → on-fail: step:implement
+5. `step:validate` → command: validate → check: verdict → on-pass: done → on-fail: step:implement
+
+---
+
+### Built-in: maintenance
+
+Codebase gardening — audit, check standards, tidy up, capture learnings.
+
+**Params:**
+- **execution-mode**: choice — `auto-chain` | `guided` | `reference`
+- **audit-scope**: string — "What area should be maintained?" — inject-into: [audit, tidy]
+
+**Steps:**
+1. `step:audit` → command: audit (audit-focus: all) → on-complete: step:conform
+2. `step:conform` → command: conform (conform-focus: both) → on-complete: step:tidy
+3. `step:tidy` → command: tidy (tidy-focus: all) → on-complete: step:curate
+4. `step:curate` → command: curate → on-complete: done
+
+---
+
+### Built-in: spike
+
+Exploratory spike — investigate then design. Stops before implementation.
+
+**Params:**
+- **execution-mode**: choice — `auto-chain` | `guided` | `reference`
+- **user-involvement**: choice — `hands-off` | `during-unknowns` (default) | `every-step` — inject-into: [design]
+
+**Steps:**
+1. `step:investigate` → command: investigate (investigation-focus: both) → on-complete: step:design
+2. `step:design` → command: design → on-complete: done
 
 ## Starting or Resuming
 
