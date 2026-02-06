@@ -14,7 +14,6 @@ Initialize the `.cortex/` directory structure in the current project.
 
 ```
 .cortex/
-  config.json
   memory/
     conventions/
     domain-model/
@@ -23,25 +22,6 @@ Initialize the `.cortex/` directory structure in the current project.
     reflections/
 ```
 
-3. Create `.cortex/config.json` with this initial content:
+3. Create a `.gitkeep` file in each empty memory subdirectory so they are tracked by git.
 
-```json
-{
-  "project": {
-    "name": "",
-    "description": "",
-    "techStack": []
-  }
-}
-```
-
-4. Ask the user to fill in the config values:
-   - Project name
-   - Short project description
-   - Tech stack (comma-separated list)
-
-5. Write the answers to `.cortex/config.json`.
-
-6. Create a `.cortex/memory/conventions/.gitkeep` file, and do the same for all other empty memory subdirectories, so they are tracked by git.
-
-7. Tell the user the initialization is complete and show the created structure.
+4. Tell the user the initialization is complete and show the created structure.

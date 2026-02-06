@@ -27,8 +27,6 @@ Read the following from the project's `.cortex/memory/` directory. Skip any that
 - **Feature-scoped**: All files in `.cortex/memory/reflections/{{feature-name}}/`
 - **Always load**: All files in `.cortex/memory/lessons-learned/`
 
-Also read `.cortex/config.json` for project context.
-
 Summarize what memory was loaded so the user knows what context you're working with.
 
 ## Step 3: Execute with Architect Agent
@@ -37,7 +35,6 @@ Launch the **architect** agent with the following task:
 
 > Review the architecture of the "{{feature-name}}" area in this codebase.
 >
-> **Project context**: (inject config.json contents)
 > **Team conventions**: (inject loaded conventions)
 > **Domain model**: (inject loaded domain model)
 > **Prior decisions**: (inject loaded decisions for this feature)
