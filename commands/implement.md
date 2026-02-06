@@ -10,7 +10,7 @@ Use the **cortex-runner** skill to execute this template.
 ## Artifacts
 
 - produces: tasks (updated)
-- consumes: tasks, design
+- consumes: tasks (optional), design (optional)
 
 ## Params
 
@@ -26,6 +26,12 @@ Use the **cortex-runner** skill to execute this template.
     - `next-batch` — Implement the next batch of unblocked tasks
     - `specific` — Let me choose specific tasks
     - `all-remaining` — Implement all remaining tasks in order
+  - Skipped in lite mode (no tasks artifact loaded) — see Lite Mode section below
+- **feature-description**:
+  - type: string
+  - question: "Describe the feature to implement"
+  - required: false
+  - Asked when no design artifact is loaded. Skipped when design exists.
 
 ## Agents
 
@@ -40,8 +46,27 @@ Collaboration style: **iterative loop per task**. For each task: scout explores 
 Implement tasks for feature "{{feature-id}}".
 
 **Project context**: (inject loaded context memory)
-**Design document**: (inject consumed design artifact)
-**Task list**: (inject consumed tasks artifact)
+**Design document**: (inject consumed design artifact, or omit if not available)
+**Task list**: (inject consumed tasks artifact, or omit if not available)
+**Feature description**: (inject {{feature-description}} if no design artifact is loaded)
+
+### Feature ID Creation
+
+When no consumed artifacts provide a feature-id, implement creates one: scan existing artifacts in `.cortex/artifacts/`, find the highest 4-digit prefix, increment by one, and combine with a slug derived from the feature-description. Follow cortex-runner Step 5 numbering conventions.
+
+### Lite Mode (no tasks artifact)
+
+When no tasks artifact is loaded, implement treats the entire feature as a single implicit task. The `task-selection` param is irrelevant and skipped.
+
+**What changes:**
+- No execution loop — there's one implicit task, not a list to iterate
+- Implementer works from `feature-description` + scout findings instead of task descriptions + design sections
+- When design is present but tasks are not (or vice versa): use what's available, skip what's missing
+- No task status updates during implementation
+
+**Lite mode flow:** scout explores → tester sets expectations → implementer codes → tester verifies.
+
+**On completion**, produce a tasks artifact (`.cortex/artifacts/{{feature-id}}.tasks.md`) with a single `TASK-0001` marked `done`, so that downstream commands (e.g. review) have something to reference. Use the standard tasks artifact format with frontmatter.
 
 ### Execution Loop
 

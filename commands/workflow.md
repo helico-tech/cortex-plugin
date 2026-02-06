@@ -45,6 +45,20 @@ Full feature development — design through validation with review feedback loop
 
 ---
 
+### Built-in: feature-lite
+
+Small feature — implement and review without design or planning ceremony.
+
+**Params:**
+- **execution-mode**: choice — `auto-chain` | `guided` | `reference`
+- **user-involvement**: choice — `hands-off` | `during-unknowns` (default) | `every-step` — inject-into: [implement]
+
+**Steps:**
+1. `step:implement` → command: implement → on-complete: step:review
+2. `step:review` → command: review → check: verdict → on-pass: done → on-fail: step:implement
+
+---
+
 ### Built-in: hotfix
 
 Fast bug fix — triage and fix, then review. Skips design and planning.
@@ -138,8 +152,8 @@ If a step errors (not verdict-fail, but actual errors), pause and ask the user w
 
 Each workflow step spawns a cortex-runner command which spawns multiple agents. Without discipline, context explodes.
 
-1. **Each step runs as a Task tool subagent.** The subagent handles the entire cortex-runner flow (memory, artifacts, agents, journal) and returns only a short summary (step name, artifact produced, verdict if any, 2-3 lines of what happened).
-2. **Instruct the subagent to keep its summary short.** Add to every step's Task prompt: "Return only: step name, artifact filename produced, verdict (if applicable), and a 2-3 line summary. Do NOT return full agent outputs."
+1. **Each step runs as a Task tool subagent.** The subagent handles the entire cortex-runner flow (all 7 steps: params, memory, artifacts, agents, artifact production, journal, context proposals) and returns only a short summary.
+2. **Instruct the subagent to complete all steps but keep its return value short.** Add to every step's Task prompt: "Complete ALL 7 cortex-runner steps including journal writing and context proposals. Return only: step name, artifact filename produced, journal entry filename, verdict (if applicable), and a 2-3 line summary. Do NOT return full agent outputs."
 3. **Between steps, your only state is the workflow-state artifact.** Read it fresh at the start of each step. Do not rely on conversation memory of previous steps.
 4. **The artifacts ARE the handoff.** Step N produces an artifact file. Step N+1 consumes that artifact file. You don't need to relay content between them — cortex-runner handles artifact loading.
 

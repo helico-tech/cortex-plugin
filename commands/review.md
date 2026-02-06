@@ -10,7 +10,7 @@ Use the **cortex-runner** skill to execute this template.
 ## Artifacts
 
 - produces: review
-- consumes: tasks, design
+- consumes: tasks (optional), design (optional)
 
 ## Params
 
@@ -32,8 +32,10 @@ Collaboration style: **parallel then react then merge**. Both agents review inde
 Review the implementation of feature "{{feature-id}}".
 
 **Project context**: (inject loaded context memory)
-**Design document**: (inject consumed design artifact)
-**Task list**: (inject consumed tasks artifact — to know what was implemented and where)
+**Design document**: (inject consumed design artifact, or omit if not available)
+**Task list**: (inject consumed tasks artifact — to know what was implemented and where, or omit if not available)
+
+If no design artifact is loaded, skip the Design Compliance section in the review artifact and focus on code quality, bugs, and conventions.
 
 ### Phase 1: Code Review
 
@@ -47,8 +49,8 @@ Launch the **cortex-team:reviewer** and **cortex-team:architect** in parallel:
 - Specific, line-level findings with concrete fix suggestions
 
 **Architect** focus:
-- Does the implementation match the design decisions?
-- Are there structural deviations from the agreed architecture?
+- If design artifact is loaded: Does the implementation match the design decisions? Are there structural deviations from the agreed architecture? Reference DEC-NNN in findings.
+- If no design artifact is loaded: Evaluate structural quality based on project context and codebase conventions only. Skip DEC-NNN checks — there are no design decisions to compare against.
 - If `context/architecture.md` is loaded: check against ARCH-NNN rules specifically — reference the standard ID in any finding (e.g., "violates ARCH-002")
 - Are the integration points clean?
 - Any new technical debt introduced?
@@ -95,8 +97,8 @@ verdict: pass/fail
 
 # Review: {{feature-name}}
 
-Design: {{feature-id}}.design.md
-Tasks: {{feature-id}}.tasks.md
+Design: {{feature-id}}.design.md (or "N/A — no design artifact" if not available)
+Tasks: {{feature-id}}.tasks.md (or "N/A — no tasks artifact" if not available)
 
 ## Verdict: PASS / FAIL
 
@@ -126,14 +128,19 @@ Tasks: {{feature-id}}.tasks.md
 (what was done well — be specific)
 
 ## Design Compliance
-(how well the implementation matches the design decisions)
+(how well the implementation matches the design decisions — omit this entire section if no design artifact was loaded)
 ```
 
 ### Phase 5: Feedback Loop (on FAIL)
 
 If verdict is **fail**:
 
+**When tasks artifact exists:**
 1. Convert each critical finding and selected warnings into new tasks
 2. Append these tasks to `.cortex/artifacts/{{feature-id}}.tasks.md` with new TASK numbers continuing from the last
 3. Set the new tasks' status to `pending`
 4. Tell the user: "Review failed. New tasks have been added to the task list. Run `/cortex-team:implement {{feature-id}}` to address the findings."
+
+**When no tasks artifact exists:**
+1. List each critical finding and selected warning directly to the user with concrete fix instructions
+2. Tell the user: "Review failed. Fix these issues and run `/cortex-team:review {{feature-id}}` again."
