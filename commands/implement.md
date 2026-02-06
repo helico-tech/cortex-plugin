@@ -80,11 +80,15 @@ If `context/idioms.md` or `context/architecture.md` were loaded in the project c
   - For `should`-level violations: flag them, implementer fixes if straightforward, otherwise note for later
   - For `may`-level violations: note in the task summary, do not block progress
 
-#### 4. Update Task Status
+#### 4. Update Task Status IMMEDIATELY
 
-After each task is verified:
-- Update the task's status in `.cortex/artifacts/{{feature-id}}.tasks.md` from `pending` to `done`
-- If the task couldn't be completed, set status to `blocked` and add a note explaining why
+**Do this right now, not later.** After each task is verified (pass or blocked), update the artifact file on disk immediately:
+
+1. Read `.cortex/artifacts/{{feature-id}}.tasks.md`
+2. Change this task's status from `pending` to `done` (or `blocked` with a note explaining why)
+3. Write the file back immediately
+
+This is not optional and must not be deferred. If the session crashes, runs out of context, or the user aborts — the completed work is preserved. Batching updates at the end defeats the entire purpose.
 
 ### Continue Until Done
 
@@ -93,7 +97,3 @@ Repeat the loop for each task in the selection. After all selected tasks are pro
 - Tasks blocked (with reasons)
 - Tasks remaining
 - Any issues discovered during implementation that weren't in the design
-
-### Update the Tasks Artifact
-
-Write the updated task list back to `.cortex/artifacts/{{feature-id}}.tasks.md` with updated statuses. Keep the same frontmatter but update `status` to reflect completion state.
