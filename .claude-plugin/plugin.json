@@ -1,0 +1,5 @@
+{
+  "name": "cortex-team",
+  "version": "0.1.0",
+  "description": "Standardized team workflows with role-based agents, parameterized prompt templates, and structured memory"
+}
