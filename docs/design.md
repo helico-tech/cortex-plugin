@@ -26,7 +26,7 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Each command consumes artifacts from prior commands and produces its own. This creates a traceable chain from design decisions through to validation.
 
-Additional standalone commands: `brainstorm`, `fix`, `refactor`, `tidy`, `audit`, `investigate`, `curate` — each with their own artifact contracts.
+Additional standalone commands: `brainstorm`, `fix`, `refactor`, `tidy`, `audit`, `assess`, `investigate`, `curate`, `conform` — each with their own artifact contracts.
 
 Workflows orchestrate multiple commands: `/cortex-team:workflow feature` chains design→plan→implement→review→validate with state tracking across sessions.
 
@@ -86,6 +86,8 @@ Artifacts are the backbone of the workflow. They are standardized outputs that c
 | audit | audit | — |
 | investigation | investigate | design (in spike workflow) |
 | curation | curate | — |
+| assessment | assess | — |
+| conformance | conform | — |
 | workflow-state | workflow | — |
 
 **Frontmatter contract** — every artifact MUST have:
@@ -148,6 +150,19 @@ Workflows compose commands into multi-step flows with branching, state tracking,
 
 **The workflow-designer command** guides users through creating project workflows collaboratively. Architect proposes structure, pragmatist challenges unnecessary steps, user decides. Validates artifact chains (every consumed artifact has a producing step upstream) and prevents infinite loops without exits.
 
+### Rationale system
+
+Non-obvious code needs preserved context. The rationale system links code markers to memory entries:
+
+**In code** — a short marker: `// @rationale RAT-003: Auth token race condition`
+**In memory** — a full entry in `.cortex/memory/context/rationales.md` with location, explanation, what breaks, and explicit "DO NOT" warnings.
+
+The RAT-NNN ID is the link. Agents always load `rationales.md` (it's context memory), so they know about traps before modifying code. Humans see the `@rationale` marker when reading code and can grep for the ID.
+
+**Two creation paths:**
+- **Auto-suggest** — step 7 of the cortex-runner detects non-obvious code after commands that modify code (implement, fix, tidy) and suggests rationale entries alongside regular context proposals
+- **Manual** — `/cortex-team:rationale` command asks what and why, writes both the code marker and memory entry
+
 ### Project-specific commands
 
 Projects can define their own commands in `.claude/commands/` — Claude Code's native project-level command directory. These commands are auto-discovered and show up as regular slash commands (e.g., `/deploy-staging`).
@@ -157,6 +172,32 @@ Project commands can follow cortex conventions by referencing the cortex-runner 
 **Why `.claude/commands/` and not `.cortex/commands/`:** Claude Code already has native project-level command discovery. Building our own would be a worse version of what exists. The cortex-team plugin provides the *framework* (agents, runner, artifacts); the native system provides *discovery*.
 
 **The command-designer command** (`/cortex-team:command-designer`) guides users through creating project commands that follow cortex conventions: proper agent teams, artifact contracts, phased tasks, and cortex-runner integration.
+
+### Standards enforcement via `conform` and context files
+
+Agentic coding requires clear structures. Without documented and enforced coding standards, agents drift from project conventions. The system was originally guidance-based (freeform conventions.md, agents told to "match existing patterns"). Standards enforcement makes it preventative.
+
+**Two types of standards:**
+- **Code idioms** (`context/idioms.md`) — local, per-file patterns. Naming, error handling, file structure. Checked file-by-file. Numbered IDIOM-NNN.
+- **Architecture constraints** (`context/architecture.md`) — cross-cutting, relational. Module boundaries, dependency directions, layer separation. Numbered ARCH-NNN.
+
+Each standard has: ID, level (must/should/may), rationale, boundary or pattern, examples.
+
+**Standards live in context/, not as artifacts.** They're living reference documents, always loaded by cortex-runner step 2. Journal entries track provenance. No artifact-level lifecycle needed.
+
+**`conform` is the core primitive.** Standalone command, no consumed artifacts. Two modes:
+- Bootstrap (no standards exist): discovers patterns, proposes initial standards
+- Compliance (standards exist): checks violations, proposes evolution
+
+**Enforcement woven into existing commands:**
+- `design` — architect checks proposed design against ARCH-NNN rules (Phase 2b)
+- `implement` — scout checks changed files against idioms and architecture per-task (Step 3b)
+- `review` — findings reference specific standard IDs (ARCH-NNN, IDIOM-NNN)
+- `tidy` — includes should-level idiom violations when focus is `all` or `standards`
+
+**Evolution via conform:** discovers undocumented patterns, detects drift (>30% violation rate), proposes updates through cortex-runner step 7 (human approves).
+
+**Maintenance workflow updated:** `audit → conform → tidy → curate`. Conform slots between audit (general health) and tidy (fixes), informing tidy of standards violations that can be auto-fixed.
 
 ### No config.json
 
@@ -195,17 +236,20 @@ cortex-team-plugin/
     tidy.md                    ← /cortex-team:tidy
     audit.md                   ← /cortex-team:audit
     brainstorm.md              ← /cortex-team:brainstorm
+    assess.md                  ← /cortex-team:assess
+    conform.md                 ← /cortex-team:conform
     investigate.md             ← /cortex-team:investigate
     curate.md                  ← /cortex-team:curate
     workflow.md                ← /cortex-team:workflow
     workflow-designer.md       ← /cortex-team:workflow-designer
     command-designer.md        ← /cortex-team:command-designer
+    rationale.md               ← /cortex-team:rationale
     help.md                    ← /cortex-team:help
   workflows/
     feature.md                 ← design→plan→implement→review→validate
     hotfix.md                  ← fix→review (skip design)
     refactor.md                ← refactor→plan→implement→review→validate
-    maintenance.md             ← audit→tidy→curate (gardening day)
+    maintenance.md             ← audit→conform→tidy→curate (gardening day)
     spike.md                   ← investigate→design (stop before building)
   skills/
     cortex-runner/
@@ -243,11 +287,14 @@ All agents use `model: inherit`.
 | refactor | — | design | scout, architect, pragmatist, tester | Sequential with debate |
 | tidy | — | tidy-report | scout, reviewer, implementer, tester | Find-fix-verify loop |
 | audit | — | audit | scout, reviewer, architect, tester | Parallel assessment, merge |
+| conform | — | conformance | scout, architect, pragmatist, reviewer | Sequential with discovery |
+| assess | — | assessment | scout, architect, tester, pragmatist | Sequential + parallel |
 | investigate | — | investigation | scout, researcher | Parallel then merge |
 | curate | — | curation | scout, pragmatist, writer | Sequential pipeline |
 | workflow | — | workflow-state | — (orchestrator) | Delegates to step commands |
 | workflow-designer | — | workflow file (not artifact) | architect, pragmatist | Iterative with user |
 | command-designer | — | command file (not artifact) | architect, pragmatist | Iterative with user |
+| rationale | — | — (writes to code + memory) | scout, writer | Sequential |
 | help | — | — | — (direct conversation) | Context-aware guidance |
 
 ### Project Structure (after cortex-init)
@@ -259,6 +306,8 @@ any-project/
       context/                 ← curated knowledge (always loaded)
         conventions.md         ← (created by team over time)
         domain-model.md        ← (created by team over time)
+        architecture.md        ← ARCH-NNN standards (created via conform or manually)
+        idioms.md              ← IDIOM-NNN standards (created via conform or manually)
       journal/                 ← raw history (never auto-loaded)
         2026-02/
           2026-02-06-0001-auth-flow-design.md
@@ -334,6 +383,19 @@ Failed reviews append new tasks to the existing task list (continuing TASK numbe
 - API responses follow the envelope pattern
 - Tests use vitest with in-memory stores
 ```
+
+**Standards context files** — structured markdown with numbered rules:
+```markdown
+# Architecture Standards
+
+## ARCH-001: Domain layer has no infrastructure dependencies
+- **level**: must
+- **rationale**: Domain logic must be testable without databases, HTTP, etc.
+- **boundary**: src/domain/ never imports from src/infrastructure/ or src/api/
+- **examples**: (good: domain uses interfaces, bad: domain imports pg client)
+```
+
+Standards files (`context/architecture.md`, `context/idioms.md`) use a stricter format than general context files. Each rule has an ID, level (must/should/may), rationale, and either boundary (architecture) or pattern (idioms). Created via `/cortex-team:conform` bootstrap mode or manually.
 
 **Journal entries** — structured markdown with frontmatter:
 ```markdown

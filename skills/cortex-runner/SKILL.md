@@ -115,6 +115,9 @@ Common numbering schemes used across commands:
 - **AUDIT-001, AUDIT-002, ...** — Audit findings (in audit artifacts)
 - **FIX-001, FIX-002, ...** — Applied fixes (in tidy-report artifacts)
 - **SKIP-001, SKIP-002, ...** — Skipped fixes (in tidy-report artifacts)
+- **VIOLATION-001, VIOLATION-002, ...** — Standards violations (in conformance artifacts)
+- **ARCH-001, ARCH-002, ...** — Architecture standards (in context/architecture.md)
+- **IDIOM-001, IDIOM-002, ...** — Code idioms (in context/idioms.md)
 
 These IDs are how artifacts cross-reference each other. A task references `REQ-001` from the design. A test covers `REQ-002`. A review finding references `DEC-003`. Without numbered IDs, the traceability chain breaks.
 
@@ -180,3 +183,16 @@ If there are valuable findings, propose specific updates to `.cortex/memory/cont
 Present all proposals to the user and ask for approval. Only write to `.cortex/memory/context/` if the user explicitly approves.
 
 If nothing from this run is worth adding to long-term context, say so and skip this step. Not every run produces lasting knowledge — that's fine.
+
+### Rationale detection
+
+For commands that modify code (implement, fix, tidy, refactor), also check: **did we write or modify any code that would be confusing without context?**
+
+Look for:
+- Workarounds for bugs in libraries or APIs
+- Non-obvious ordering or timing (setTimeout, retry logic, specific sequences)
+- Code that looks wrong but is deliberately that way
+- Edge case handling that seems unnecessary without knowing the edge case
+- Anything where a future developer might think "this is dead code" or "this can be simplified"
+
+If found, suggest a rationale entry: propose the code marker (`@rationale RAT-NNN`) and the memory entry for `.cortex/memory/context/rationales.md`. Present to the user alongside the regular context update proposals.
