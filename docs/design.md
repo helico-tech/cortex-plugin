@@ -26,7 +26,7 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Each command consumes artifacts from prior commands and produces its own. This creates a traceable chain from design decisions through to validation.
 
-Additional standalone commands: `fix`, `refactor`, `tidy`, `audit`, `curate` — each with their own artifact contracts.
+Additional standalone commands: `fix`, `refactor`, `tidy`, `audit`, `investigate`, `curate` — each with their own artifact contracts.
 
 Workflows orchestrate multiple commands: `/cortex-team:workflow feature` chains design→plan→implement→review→validate with state tracking across sessions.
 
@@ -83,6 +83,7 @@ Artifacts are the backbone of the workflow. They are standardized outputs that c
 | validation | validate | — |
 | tidy-report | tidy | — |
 | audit | audit | — |
+| investigation | investigate | design (in spike workflow) |
 | curation | curate | — |
 | workflow-state | workflow | — |
 
@@ -182,11 +183,16 @@ cortex-team-plugin/
     refactor.md                ← /cortex-team:refactor
     tidy.md                    ← /cortex-team:tidy
     audit.md                   ← /cortex-team:audit
+    investigate.md             ← /cortex-team:investigate
     curate.md                  ← /cortex-team:curate
     workflow.md                ← /cortex-team:workflow
     workflow-designer.md       ← /cortex-team:workflow-designer
   workflows/
-    feature.md                 ← standard feature workflow
+    feature.md                 ← design→plan→implement→review→validate
+    hotfix.md                  ← fix→review (skip design)
+    refactor.md                ← refactor→plan→implement→review→validate
+    maintenance.md             ← audit→tidy→curate (gardening day)
+    spike.md                   ← investigate→design (stop before building)
   skills/
     cortex-runner/
       SKILL.md                 ← shared 7-step execution flow
@@ -222,6 +228,7 @@ All agents use `model: inherit`.
 | refactor | — | design | scout, architect, pragmatist, tester | Sequential with debate |
 | tidy | — | tidy-report | scout, reviewer, implementer, tester | Find-fix-verify loop |
 | audit | — | audit | scout, reviewer, architect, tester | Parallel assessment, merge |
+| investigate | — | investigation | scout, researcher | Parallel then merge |
 | curate | — | curation | scout, pragmatist, writer | Sequential pipeline |
 | workflow | — | workflow-state | — (orchestrator) | Delegates to step commands |
 | workflow-designer | — | workflow file (not artifact) | architect, pragmatist | Iterative with user |

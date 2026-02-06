@@ -22,7 +22,7 @@ This command orchestrates multi-step workflows. It does NOT use the cortex-runne
 3. If found in BOTH locations, **stop with an error**: "Workflow '{workflow-name}' exists in both the plugin and the project. Project workflows must use unique names to avoid shadowing."
 4. If found in neither, list available workflows from both locations and ask the user to pick one.
 
-**Available plugin workflows:** `feature`
+**Available plugin workflows:** `feature`, `hotfix`, `refactor`, `maintenance`, `spike`
 
 ## Starting or Resuming
 

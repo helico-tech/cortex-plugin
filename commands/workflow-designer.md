@@ -87,7 +87,7 @@ Before saving, verify:
 - **No infinite loops without exit**: every loop has a path that eventually reaches `done`
 - **No name collision**: the workflow name doesn't conflict with plugin workflows
 
-Available plugin workflow names: `feature`
+Available plugin workflow names: `feature`, `hotfix`, `refactor`, `maintenance`, `spike`
 
 If validation fails, show the issue and help the user fix it.
 
