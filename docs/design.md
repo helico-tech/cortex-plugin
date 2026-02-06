@@ -26,7 +26,7 @@ design → plan → implement → review ←→ implement (feedback loop) → va
 
 Each command consumes artifacts from prior commands and produces its own. This creates a traceable chain from design decisions through to validation.
 
-Additional standalone commands: `fix`, `refactor`, `tidy` — each with their own artifact contracts.
+Additional standalone commands: `fix`, `refactor`, `tidy`, `audit` — each with their own artifact contracts.
 
 ## Design Decisions
 
@@ -80,6 +80,7 @@ Artifacts are the backbone of the workflow. They are standardized outputs that c
 | review | review | validate, implement (on fail) |
 | validation | validate | — |
 | tidy-report | tidy | — |
+| audit | audit | — |
 
 **Frontmatter contract** — every artifact MUST have:
 ```yaml
@@ -156,6 +157,7 @@ cortex-team-plugin/
     fix.md                     ← /cortex-team:fix
     refactor.md                ← /cortex-team:refactor
     tidy.md                    ← /cortex-team:tidy
+    audit.md                   ← /cortex-team:audit
   skills/
     cortex-runner/
       SKILL.md                 ← shared 7-step execution flow
@@ -190,6 +192,7 @@ All agents use `model: inherit`.
 | fix | — | tasks (small) or routes to design | scout, pragmatist, implementer, tester | Sequential with triage gate |
 | refactor | — | design | scout, architect, pragmatist, tester | Sequential with debate |
 | tidy | — | tidy-report | scout, reviewer, implementer, tester | Find-fix-verify loop |
+| audit | — | audit | scout, reviewer, architect, tester | Parallel assessment, merge |
 
 ### Project Structure (after cortex-init)
 
