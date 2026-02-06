@@ -102,8 +102,10 @@ Present the options:
 
 - **Quick cleanup:** `/cortex-team:tidy <area>` — find and fix code quality issues
 - **Health check:** `/cortex-team:audit <area>` — read-only assessment, no changes
+- **Standards check:** `/cortex-team:conform <area>` — check conformance to coding standards, discover undocumented patterns
 - **Structural change:** `/cortex-team:refactor <area>` — investigate and design a refactor
-- **Full gardening day:** `/cortex-team:workflow maintenance` — audit → tidy → curate
+- **Agentic readiness:** `/cortex-team:assess <area>` — evaluate how well your codebase supports agentic development
+- **Full gardening day:** `/cortex-team:workflow maintenance` — audit → conform → tidy → curate
 
 #### Explore or research
 
@@ -111,6 +113,7 @@ Present the options:
 
 - **Codebase + web research:** `/cortex-team:investigate <topic>` — facts only, no decisions
 - **Open exploration:** `/cortex-team:brainstorm <idea>` — explore until something crystallizes
+- **Document the "why":** `/cortex-team:rationale <code>` — record why non-obvious code exists so agents don't break it
 - **Research then design:** `/cortex-team:workflow spike` — investigate → design, stop before building
 
 #### Understand the system
@@ -145,7 +148,10 @@ brainstorm → design → plan → implement → review ↔ implement → valida
 | `refactor` | Investigate and design a refactor |
 | `tidy` | Find-fix-verify code quality issues |
 | `audit` | Read-only codebase health report |
+| `conform` | Check standards conformance, discover patterns, propose evolution |
+| `assess` | Evaluate agentic readiness: feedback, runnability, introspectability |
 | `investigate` | Fact-finding with scout + researcher |
+| `rationale` | Document why non-obvious code exists (code marker + memory) |
 | `curate` | Process journals into context memory |
 | `workflow` | Run a multi-step workflow |
 | `workflow-designer` | Create a project-specific workflow |
