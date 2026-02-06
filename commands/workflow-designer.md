@@ -22,8 +22,8 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **architect** — Propose workflow structure based on the goal, suggest command ordering that respects artifact dependencies
-2. **pragmatist** — Challenge unnecessary steps, push for the minimal flow that achieves the goal
+1. **cortex-team:architect** — Propose workflow structure based on the goal, suggest command ordering that respects artifact dependencies
+2. **cortex-team:pragmatist** — Challenge unnecessary steps, push for the minimal flow that achieves the goal
 
 Collaboration style: **iterative with user**. This is a collaborative design session. The architect proposes, the pragmatist challenges, the user decides. One decision at a time.
 
@@ -63,12 +63,12 @@ Highlight which commands make sense for the stated goal.
 
 ### Phase 3: Compose Steps
 
-Launch the **architect** to propose an initial workflow structure:
+Launch the **cortex-team:architect** to propose an initial workflow structure:
 - Order commands to respect artifact dependencies (can't review without tasks)
 - Suggest transitions: what happens on pass/fail for verdict-producing commands
 - Identify which workflow-level params should exist
 
-Launch the **pragmatist** to challenge:
+Launch the **cortex-team:pragmatist** to challenge:
 - Is every step necessary? What's the minimum flow?
 - Are there steps that could be optional?
 - Is this just the standard `feature` workflow with one tweak? If so, say that.

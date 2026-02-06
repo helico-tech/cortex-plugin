@@ -29,9 +29,9 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Explore relevant codebase areas before implementation
-2. **implementer** — Write the code
-3. **tester** — Write tests and verify implementation in-loop (not after)
+1. **cortex-team:scout** — Explore relevant codebase areas before implementation
+2. **cortex-team:implementer** — Write the code
+3. **cortex-team:tester** — Write tests and verify implementation in-loop (not after)
 
 Collaboration style: **iterative loop per task**. For each task: scout explores → implementer codes → tester verifies → mark done or iterate.
 
@@ -49,21 +49,21 @@ For each task to implement (based on **{{task-selection}}**):
 
 #### 1. Pre-Implementation: Scout
 
-Launch the **scout** to explore the relevant codebase area for this specific task:
+Launch the **cortex-team:scout** to explore the relevant codebase area for this specific task:
 - Find the files that need to change
 - Understand existing patterns in those files
 - Report integration points and conventions to follow
 
 #### 2. Implement
 
-Launch the **implementer** with the scout's findings, the task description, and the relevant design sections:
+Launch the **cortex-team:implementer** with the scout's findings, the task description, and the relevant design sections:
 - Write the code following existing patterns
 - Make minimal changes — only what the task requires
 - Run existing tests to ensure nothing breaks
 
 #### 3. In-Loop Verification
 
-Launch the **tester**:
+Launch the **cortex-team:tester**:
 - Write the tests specified in the task (if it's a test task) or verify the implementation (if it's a code task)
 - Run the tests
 - If tests fail: report what failed and loop back to step 2 with the failure details
@@ -71,7 +71,7 @@ Launch the **tester**:
 
 #### 3b. Standards Compliance Check
 
-If `context/idioms.md` or `context/architecture.md` were loaded in the project context, launch the **scout** to check the files changed in this task:
+If `context/idioms.md` or `context/architecture.md` were loaded in the project context, launch the **cortex-team:scout** to check the files changed in this task:
 
 - Check changed files against IDIOM-NNN rules (naming, error handling, patterns)
 - Check new imports/dependencies against ARCH-NNN rules (boundary violations, layer crossings)

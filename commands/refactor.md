@@ -33,10 +33,10 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Map the current state of the area to refactor: dependencies, usage, test coverage
-2. **architect** — Propose the target state: what the refactored code should look like and why
-3. **pragmatist** — Challenge: is this refactor worth the cost? What's the minimum change needed?
-4. **tester** — Assess test coverage of the refactor area and define what needs testing to ensure nothing breaks
+1. **cortex-team:scout** — Map the current state of the area to refactor: dependencies, usage, test coverage
+2. **cortex-team:architect** — Propose the target state: what the refactored code should look like and why
+3. **cortex-team:pragmatist** — Challenge: is this refactor worth the cost? What's the minimum change needed?
+4. **cortex-team:tester** — Assess test coverage of the refactor area and define what needs testing to ensure nothing breaks
 
 Collaboration style: **sequential with debate**. Scout maps the current state. Architect proposes the target state. Pragmatist challenges the scope. Tester defines the safety net.
 
@@ -48,7 +48,7 @@ Design a refactor for "{{refactor-area}}" with goal: {{refactor-goal}}
 
 ### Phase 1: Current State Analysis
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Map the area to refactor: all files, dependencies, consumers
 - Identify what depends on this code (blast radius)
 - Report existing test coverage for this area
@@ -56,7 +56,7 @@ Launch the **scout**:
 
 ### Phase 2: Target State Design
 
-Launch the **architect** with the scout's findings:
+Launch the **cortex-team:architect** with the scout's findings:
 - Propose the target state — what should the refactored code look like?
 - Define the migration path: how to get from current to target
 - Identify risks: what could break during the refactor?
@@ -64,14 +64,14 @@ Launch the **architect** with the scout's findings:
 
 ### Phase 3: Scope Challenge
 
-Launch the **pragmatist**:
+Launch the **cortex-team:pragmatist**:
 - Is the full refactor worth it? What's the minimum change that achieves the goal?
 - Can the refactor be done incrementally instead of all at once?
 - What's the cost of NOT refactoring? Is it actually causing problems today?
 
 ### Phase 4: Safety Net
 
-Launch the **tester**:
+Launch the **cortex-team:tester**:
 - What tests exist for this area? Are they sufficient to catch regressions?
 - What tests need to be written BEFORE refactoring (the safety net)?
 - Define pass/fail criteria: how do we know the refactor didn't break anything?

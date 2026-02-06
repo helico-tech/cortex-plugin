@@ -33,11 +33,11 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **researcher** — Research current best practices, library docs, and patterns relevant to this feature
-2. **scout** — Explore the existing codebase to understand current patterns, conventions, and related code
-3. **architect** — Design the solution: structure, components, data flow, decisions with trade-offs
-4. **pragmatist** — Challenge the architect's design: is anything over-engineered? What's the simpler path?
-5. **tester** — Define test strategy: what to test, how, risk areas, edge cases, pass/fail criteria
+1. **cortex-team:researcher** — Research current best practices, library docs, and patterns relevant to this feature
+2. **cortex-team:scout** — Explore the existing codebase to understand current patterns, conventions, and related code
+3. **cortex-team:architect** — Design the solution: structure, components, data flow, decisions with trade-offs
+4. **cortex-team:pragmatist** — Challenge the architect's design: is anything over-engineered? What's the simpler path?
+5. **cortex-team:tester** — Define test strategy: what to test, how, risk areas, edge cases, pass/fail criteria
 
 Collaboration style: **sequential with debate**. Researcher and scout gather context. Architect proposes. Pragmatist challenges. Architect revises. Tester defines test strategy. Final design incorporates all perspectives.
 
@@ -51,20 +51,20 @@ Design the feature "{{feature-name}}": {{feature-description}}
 
 **If a brainstorm artifact was loaded:** The brainstorm already explored the problem space, gathered perspectives, and documented ideas/decisions. Use the brainstorm's outcome, explored ideas, and open questions as the starting context. Skip the researcher and scout — their work is already captured. Jump to Phase 2 with the brainstorm findings as input.
 
-**If no brainstorm artifact:** Launch the **researcher** and **scout** agents in parallel:
+**If no brainstorm artifact:** Launch the **cortex-team:researcher** and **cortex-team:scout** agents in parallel:
 
 - **Researcher**: Find current best practices, library documentation, and patterns relevant to "{{feature-name}}". Report findings with sources.
 - **Scout**: Explore the existing codebase. Find related code, existing patterns, conventions, and integration points relevant to "{{feature-name}}". Report with file:line references.
 
 ### Phase 2: Architecture & Challenge
 
-Launch the **architect** with the research and scout findings:
+Launch the **cortex-team:architect** with the research and scout findings:
 
 - Propose the design: components, data flow, integration points, technology choices
 - Make decisions with explicit trade-offs and rejected alternatives
 - Be specific: file paths, function signatures, data structures
 
-Then launch the **pragmatist** to challenge the architect's proposal:
+Then launch the **cortex-team:pragmatist** to challenge the architect's proposal:
 
 - What's over-engineered? What's the simpler alternative?
 - What's being built for hypothetical future requirements?
@@ -74,7 +74,7 @@ The architect revises based on the pragmatist's valid challenges. If they disagr
 
 ### Phase 2b: Architecture Standards Check
 
-If `context/architecture.md` was loaded in the project context, the **architect** verifies the revised design against the documented ARCH-NNN standards:
+If `context/architecture.md` was loaded in the project context, the **cortex-team:architect** verifies the revised design against the documented ARCH-NNN standards:
 
 - For each ARCH-NNN rule: does this design comply?
 - If the design violates a standard, flag it and revise the design to comply
@@ -83,7 +83,7 @@ If `context/architecture.md` was loaded in the project context, the **architect*
 
 ### Phase 3: Test Strategy
 
-Launch the **tester** with the revised design:
+Launch the **cortex-team:tester** with the revised design:
 
 - Define what to test and at what level (unit, integration, e2e)
 - Identify risk areas and edge cases

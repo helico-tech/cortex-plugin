@@ -26,8 +26,8 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Find the exact code location and understand the surrounding context
-2. **writer** — Write the rationale entry clearly and concisely
+1. **cortex-team:scout** — Find the exact code location and understand the surrounding context
+2. **cortex-team:writer** — Write the rationale entry clearly and concisely
 
 Collaboration style: **sequential**. Scout finds the code, writer documents it.
 
@@ -39,7 +39,7 @@ Document a rationale for: "{{what}}"
 
 ### Phase 1: Find the Code
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Locate the exact code being documented
 - Identify the file and line number
 - Understand the surrounding code context
@@ -47,7 +47,7 @@ Launch the **scout**:
 
 ### Phase 2: Write the Rationale
 
-Launch the **writer** with the scout's findings and the user's explanation ("{{why}}"):
+Launch the **cortex-team:writer** with the scout's findings and the user's explanation ("{{why}}"):
 
 Determine the next RAT-NNN number:
 1. Read `.cortex/memory/context/rationales.md` if it exists

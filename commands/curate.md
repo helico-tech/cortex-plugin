@@ -31,9 +31,9 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Read all journal entries in range, read existing context files, extract raw findings
-2. **pragmatist** — Challenge every finding: is this worth remembering? Is it already captured? Will it be useful?
-3. **writer** — Draft concrete edits to context files from the surviving findings
+1. **cortex-team:scout** — Read all journal entries in range, read existing context files, extract raw findings
+2. **cortex-team:pragmatist** — Challenge every finding: is this worth remembering? Is it already captured? Will it be useful?
+3. **cortex-team:writer** — Draft concrete edits to context files from the surviving findings
 
 Collaboration style: **sequential pipeline**. Scout extracts, pragmatist filters, writer synthesizes. Each stage narrows the funnel.
 
@@ -45,7 +45,7 @@ Curate journal entries into context updates. Focus: {{focus}}
 
 ### Phase 1: Extract
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Read all `.md` files in `.cortex/memory/journal/` matching the date filter "{{since}}"
   - `all` → read everything
   - `YYYY-MM` → read that month's directory
@@ -63,7 +63,7 @@ Launch the **scout**:
 
 ### Phase 2: Filter
 
-Launch the **pragmatist** with scout's findings:
+Launch the **cortex-team:pragmatist** with scout's findings:
 - For each finding, challenge it:
   - Is this a **pattern** (appeared multiple times) or a **one-off**? One-offs get cut.
   - Is this **already captured** in existing context files? Duplicates get cut.
@@ -77,7 +77,7 @@ Launch the **pragmatist** with scout's findings:
 
 ### Phase 3: Synthesize
 
-Launch the **writer** with the filtered findings:
+Launch the **cortex-team:writer** with the filtered findings:
 - For each **Add** finding, draft the exact text to append to the appropriate context file
   - If no appropriate file exists, propose a new context file with a clear name
   - Keep entries concise — one bullet point or short paragraph per finding

@@ -31,14 +31,14 @@ Use the **cortex-runner** skill to execute this template.
 
 This command is unique: **agents are not fixed upfront.** The facilitator (you) pulls in agents dynamically based on what the conversation needs. Any agent from the roster can participate:
 
-- **scout** — pull in when the codebase needs mapping ("what do we already have?")
-- **researcher** — pull in when external knowledge is needed ("what's out there?")
-- **architect** — pull in when structural thinking is needed ("how would this fit together?")
-- **pragmatist** — pull in when ideas need challenging ("is this actually worth doing?")
-- **tester** — pull in when risks need identifying ("what could go wrong?")
-- **writer** — pull in when ideas need articulating clearly ("can we state this simply?")
+- **cortex-team:scout** — pull in when the codebase needs mapping ("what do we already have?")
+- **cortex-team:researcher** — pull in when external knowledge is needed ("what's out there?")
+- **cortex-team:architect** — pull in when structural thinking is needed ("how would this fit together?")
+- **cortex-team:pragmatist** — pull in when ideas need challenging ("is this actually worth doing?")
+- **cortex-team:tester** — pull in when risks need identifying ("what could go wrong?")
+- **cortex-team:writer** — pull in when ideas need articulating clearly ("can we state this simply?")
 
-The **reviewer** and **implementer** are deliberately excluded — brainstorming is not about code review or writing code.
+The **cortex-team:reviewer** and **cortex-team:implementer** are deliberately excluded — brainstorming is not about code review or writing code.
 
 Collaboration style: **facilitated workshop with dynamic participation**. You are the facilitator. You moderate, ask questions, recognize when a perspective is needed, and pull in agents. The user can also summon agents directly ("what would the pragmatist say?", "get the researcher on this").
 
@@ -59,7 +59,7 @@ If `adaptive`: Start free-flowing during exploration. Shift to structured when i
 ### Opening
 
 1. Acknowledge the topic
-2. If relevant, pull in the **scout** to quickly map related existing code/docs (don't make this a 10-minute exploration — just a quick orientation)
+2. If relevant, pull in the **cortex-team:scout** to quickly map related existing code/docs (don't make this a 10-minute exploration — just a quick orientation)
 3. Ask the FIRST question to understand what's behind this idea: What problem is this solving? Why now? What prompted this?
 
 ### Explore Loop
@@ -72,12 +72,12 @@ This is the core. Repeat until something crystallizes:
 - Gently redirect threads that are going nowhere (but note them — they might matter later)
 
 **Pull in agents when needed:**
-- If the user mentions technology or approaches → pull in **researcher** to quickly check current best practices
-- If the conversation needs structural thinking → pull in **architect** to sketch how pieces might fit
-- If an idea is getting complex → pull in **pragmatist** to challenge: "do we actually need this?"
-- If the user asks "what could go wrong?" → pull in **tester** to identify risks
-- If an idea needs clear articulation → pull in **writer** to state it simply
-- If the user asks for codebase context → pull in **scout** to map what exists
+- If the user mentions technology or approaches → pull in **cortex-team:researcher** to quickly check current best practices
+- If the conversation needs structural thinking → pull in **cortex-team:architect** to sketch how pieces might fit
+- If an idea is getting complex → pull in **cortex-team:pragmatist** to challenge: "do we actually need this?"
+- If the user asks "what could go wrong?" → pull in **cortex-team:tester** to identify risks
+- If an idea needs clear articulation → pull in **cortex-team:writer** to state it simply
+- If the user asks for codebase context → pull in **cortex-team:scout** to map what exists
 
 When pulling in an agent, use the Task tool to spawn them. Give them the conversation context and a specific question. Present their response as a perspective, not a verdict: "The pragmatist's take: ..."
 

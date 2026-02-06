@@ -31,10 +31,10 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Map the area: files, dependencies, size, test coverage, conventions
-2. **reviewer** — Find code quality issues, bugs, security concerns
-3. **architect** — Evaluate structural integrity: coupling, cohesion, patterns, layering
-4. **tester** — Assess test coverage: what's tested, what's missing, what's flaky
+1. **cortex-team:scout** — Map the area: files, dependencies, size, test coverage, conventions
+2. **cortex-team:reviewer** — Find code quality issues, bugs, security concerns
+3. **cortex-team:architect** — Evaluate structural integrity: coupling, cohesion, patterns, layering
+4. **cortex-team:tester** — Assess test coverage: what's tested, what's missing, what's flaky
 
 Collaboration style: **parallel assessment, then merge**. Scout maps first. Then reviewer, architect, and tester assess in parallel (each from their own angle). Findings are merged, deduplicated, and prioritized.
 
@@ -46,7 +46,7 @@ Audit "{{audit-scope}}" with focus on: {{audit-focus}}
 
 ### Phase 1: Mapping
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Map every file in scope: size, age, change frequency (from git log)
 - Identify dependencies within and outside the scope
 - Report existing test coverage (which files have tests, which don't)

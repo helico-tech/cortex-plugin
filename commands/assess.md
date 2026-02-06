@@ -29,10 +29,10 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Map the codebase from an agent's perspective: structure, entry points, test infra, docs, tooling
-2. **architect** — Evaluate introspectability and navigability: types, boundaries, naming, dependency clarity
-3. **tester** — Evaluate feedback loops and runnability: test levels, coverage, scripts, dev server, CI
-4. **pragmatist** — Review all findings and proposed improvements, ruthlessly prioritize by agent impact
+1. **cortex-team:scout** — Map the codebase from an agent's perspective: structure, entry points, test infra, docs, tooling
+2. **cortex-team:architect** — Evaluate introspectability and navigability: types, boundaries, naming, dependency clarity
+3. **cortex-team:tester** — Evaluate feedback loops and runnability: test levels, coverage, scripts, dev server, CI
+4. **cortex-team:pragmatist** — Review all findings and proposed improvements, ruthlessly prioritize by agent impact
 
 Collaboration style: **sequential + parallel**. Scout maps first. Then architect and tester assess in parallel (each from their own angle). Pragmatist reviews everything last and culls low-impact recommendations.
 
@@ -44,7 +44,7 @@ Assess agentic readiness of "{{assess-scope}}" at depth: {{assess-depth}}
 
 ### Phase 1: Mapping
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - File structure: organization, naming conventions, consistency across the scope
 - Entry points: scripts in package.json, Makefile, docker-compose, CLI commands
 - Test infrastructure: test files, test config (jest/vitest/pytest/etc.), test scripts, CI config
@@ -55,7 +55,7 @@ Launch the **scout**:
 
 ### Phase 2: Parallel Assessment
 
-Launch **architect** and **tester** in parallel:
+Launch **cortex-team:architect** and **cortex-team:tester** in parallel:
 
 **Architect** (introspectability + navigability):
 - Can you find things by grepping? Consistent naming, no magic strings, no dynamic dispatch hiding call sites
@@ -77,7 +77,7 @@ Launch **architect** and **tester** in parallel:
 
 ### Phase 3: Pragmatist Review
 
-Give the **pragmatist** all findings from scout, architect, and tester, plus the draft improvement tasks.
+Give the **cortex-team:pragmatist** all findings from scout, architect, and tester, plus the draft improvement tasks.
 
 The pragmatist's job:
 - Kill any recommendation that's theoretical, aspirational, or low-impact

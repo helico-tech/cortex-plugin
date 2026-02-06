@@ -22,8 +22,8 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **tester** — Verify requirements are met, pass/fail criteria are satisfied, test coverage is adequate
-2. **reviewer** — Verify the review findings were addressed and no regressions were introduced
+1. **cortex-team:tester** — Verify requirements are met, pass/fail criteria are satisfied, test coverage is adequate
+2. **cortex-team:reviewer** — Verify the review findings were addressed and no regressions were introduced
 
 Collaboration style: **sequential**. Tester validates against design requirements. Reviewer confirms review findings were resolved.
 
@@ -48,7 +48,7 @@ Before starting validation, verify:
 
 ### Phase 1: Requirements Validation
 
-Launch the **tester** with the design document and the implemented code:
+Launch the **cortex-team:tester** with the design document and the implemented code:
 
 For each requirement (REQ-NNN) in the design:
 - Check if it's implemented
@@ -62,7 +62,7 @@ For each risk (RISK-NNN) in the design:
 
 ### Phase 2: Review Resolution
 
-Launch the **reviewer** to verify:
+Launch the **cortex-team:reviewer** to verify:
 - Every critical finding from the review has been addressed
 - No regressions were introduced by the fixes
 - The review's warnings that were accepted are documented

@@ -29,10 +29,10 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Investigate the bug: reproduce, trace the root cause, assess scope
-2. **pragmatist** — Triage: is this a small fix or does it need a design?
-3. **implementer** — Fix the bug (if small)
-4. **tester** — Write a regression test and verify the fix
+1. **cortex-team:scout** — Investigate the bug: reproduce, trace the root cause, assess scope
+2. **cortex-team:pragmatist** — Triage: is this a small fix or does it need a design?
+3. **cortex-team:implementer** — Fix the bug (if small)
+4. **cortex-team:tester** — Write a regression test and verify the fix
 
 Collaboration style: **sequential with triage gate**. Scout investigates. Pragmatist triages. If small: implementer fixes, tester verifies. If large: route to design.
 
@@ -44,7 +44,7 @@ Assess and fix: "{{bug-description}}"
 
 ### Phase 1: Investigation
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Find the relevant code
 - Trace the root cause
 - Identify all files affected
@@ -52,7 +52,7 @@ Launch the **scout**:
 
 ### Phase 2: Triage
 
-Launch the **pragmatist** with the scout's findings:
+Launch the **cortex-team:pragmatist** with the scout's findings:
 - Is this a small, contained fix (1-3 files, clear root cause, low risk)?
 - Or is this a larger issue that needs a design (architectural problem, unclear scope, high risk)?
 - Make a clear recommendation: `fix-now` or `needs-design`
@@ -63,11 +63,11 @@ If **{{user-involvement}}** is `during-unknowns` or `every-step`, present the tr
 
 If triage says `fix-now`:
 
-1. Launch the **implementer** with the scout's findings:
+1. Launch the **cortex-team:implementer** with the scout's findings:
    - Fix the root cause
    - Minimal changes — fix the bug, don't refactor the neighborhood
 
-2. Launch the **tester**:
+2. Launch the **cortex-team:tester**:
    - Write a regression test that reproduces the bug and verifies the fix
    - Run existing tests to ensure nothing else broke
    - If tests fail, loop back to implementer

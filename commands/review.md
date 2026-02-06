@@ -22,8 +22,8 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **reviewer** — Find bugs, edge cases, convention violations, security issues
-2. **architect** — Evaluate structural integrity against the design decisions
+1. **cortex-team:reviewer** — Find bugs, edge cases, convention violations, security issues
+2. **cortex-team:architect** — Evaluate structural integrity against the design decisions
 
 Collaboration style: **parallel then merge**. Both agents review independently, findings are merged and deduplicated.
 
@@ -37,7 +37,7 @@ Review the implementation of feature "{{feature-id}}".
 
 ### Phase 1: Code Review
 
-Launch the **reviewer** and **architect** in parallel:
+Launch the **cortex-team:reviewer** and **cortex-team:architect** in parallel:
 
 **Reviewer** focus:
 - Bugs, logic errors, missed edge cases

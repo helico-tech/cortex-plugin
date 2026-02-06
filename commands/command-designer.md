@@ -22,8 +22,8 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **architect** — Propose command structure: params, agents, phases, artifact contract
-2. **pragmatist** — Challenge unnecessary complexity, push for the minimal command that achieves the goal
+1. **cortex-team:architect** — Propose command structure: params, agents, phases, artifact contract
+2. **cortex-team:pragmatist** — Challenge unnecessary complexity, push for the minimal command that achieves the goal
 
 Collaboration style: **iterative with user**. Architect proposes, pragmatist challenges, user decides. One decision at a time.
 
@@ -87,13 +87,13 @@ Help the user define command parameters:
 
 ### Phase 5: Design the Task
 
-Launch the **architect** to propose the phased task structure:
+Launch the **cortex-team:architect** to propose the phased task structure:
 - Break the command's work into phases
 - Assign agents to each phase
 - Define what each agent does in each phase
 - Ensure the phases flow logically
 
-Launch the **pragmatist** to challenge:
+Launch the **cortex-team:pragmatist** to challenge:
 - Are all phases necessary?
 - Is any agent doing redundant work?
 - Could this be simpler?

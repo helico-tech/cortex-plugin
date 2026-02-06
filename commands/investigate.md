@@ -29,8 +29,8 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Map what exists in the codebase related to this topic
-2. **researcher** — Research external sources: documentation, best practices, alternatives
+1. **cortex-team:scout** — Map what exists in the codebase related to this topic
+2. **cortex-team:researcher** — Research external sources: documentation, best practices, alternatives
 
 Collaboration style: **parallel then merge**. Scout and researcher work independently, findings are merged into a single report.
 
@@ -44,7 +44,7 @@ Focus: {{investigation-focus}}
 
 ### Phase 1: Parallel Exploration
 
-Launch **scout** and **researcher** in parallel (based on {{investigation-focus}}):
+Launch **cortex-team:scout** and **cortex-team:researcher** in parallel (based on {{investigation-focus}}):
 
 **Scout** (if focus is `codebase` or `both`):
 - Find all code related to "{{investigation-topic}}"

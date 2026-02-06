@@ -22,9 +22,9 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **architect** — Break the design into concrete implementation tasks with dependencies
-2. **implementer** — Review tasks for feasibility, estimate sizes, flag unclear requirements
-3. **tester** — Add testing tasks, ensure test strategy from design is covered in the plan
+1. **cortex-team:architect** — Break the design into concrete implementation tasks with dependencies
+2. **cortex-team:implementer** — Review tasks for feasibility, estimate sizes, flag unclear requirements
+3. **cortex-team:tester** — Add testing tasks, ensure test strategy from design is covered in the plan
 
 Collaboration style: **sequential refinement**. Architect creates initial breakdown. Implementer reviews for feasibility and adds detail. Tester ensures testing tasks are included. Each refines the previous output.
 
@@ -37,7 +37,7 @@ Create a task list for feature "{{feature-id}}" based on its design document.
 
 ### Phase 1: Task Breakdown
 
-Launch the **architect** with the design document:
+Launch the **cortex-team:architect** with the design document:
 
 - Break the design into concrete, actionable tasks
 - Identify dependencies between tasks (what blocks what)
@@ -47,7 +47,7 @@ Launch the **architect** with the design document:
 
 ### Phase 2: Feasibility Review
 
-Launch the **implementer** to review the task list:
+Launch the **cortex-team:implementer** to review the task list:
 
 - Are the tasks specific enough to implement without guessing?
 - Are any tasks too large and should be split?
@@ -57,7 +57,7 @@ Launch the **implementer** to review the task list:
 
 ### Phase 3: Test Coverage
 
-Launch the **tester** to review and add test tasks:
+Launch the **cortex-team:tester** to review and add test tasks:
 
 - Ensure every test from the design's Test Plan has a corresponding task
 - Add test tasks at appropriate points in the dependency graph (not all at the end)

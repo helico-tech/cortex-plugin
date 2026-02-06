@@ -31,10 +31,10 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Map the area: current state, test coverage, conventions in surrounding code
-2. **reviewer** — Find code quality issues in the specified area
-3. **implementer** — Fix the issues
-4. **tester** — Verify nothing broke after each fix
+1. **cortex-team:scout** — Map the area: current state, test coverage, conventions in surrounding code
+2. **cortex-team:reviewer** — Find code quality issues in the specified area
+3. **cortex-team:implementer** — Fix the issues
+4. **cortex-team:tester** — Verify nothing broke after each fix
 
 Collaboration style: **find-fix-verify loop**. Scout maps. Reviewer finds issues. Implementer fixes them one by one. Tester verifies after each fix.
 
@@ -46,12 +46,12 @@ Tidy up "{{tidy-scope}}" with focus on: {{tidy-focus}}
 
 ### Phase 1: Assessment
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Map the files in scope
 - Identify existing test coverage
 - Find conventions in surrounding code (so tidy brings code INTO alignment, not away from it)
 
-Launch the **reviewer** with scout's findings:
+Launch the **cortex-team:reviewer** with scout's findings:
 - Find code quality issues matching the **{{tidy-focus}}** focus
 - If {{tidy-focus}} is `all` or `standards`, and `context/idioms.md` is loaded: include `should`-level and `may`-level idiom violations in the findings (leave `must`-level to the user — those may need design decisions)
 - Classify each issue: what it is, where it is, how to fix it

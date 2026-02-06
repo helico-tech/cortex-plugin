@@ -29,10 +29,10 @@ Use the **cortex-runner** skill to execute this template.
 
 ## Agents
 
-1. **scout** — Scan codebase: find patterns, check files against standards, discover undocumented conventions
-2. **architect** — Evaluate architectural constraints: module boundaries, dependency directions, layer violations
-3. **pragmatist** — Challenge proposed new standards: is this intentional or coincidence? YAGNI?
-4. **reviewer** — Compile structured compliance report, classify violations by severity
+1. **cortex-team:scout** — Scan codebase: find patterns, check files against standards, discover undocumented conventions
+2. **cortex-team:architect** — Evaluate architectural constraints: module boundaries, dependency directions, layer violations
+3. **cortex-team:pragmatist** — Challenge proposed new standards: is this intentional or coincidence? YAGNI?
+4. **cortex-team:reviewer** — Compile structured compliance report, classify violations by severity
 
 Collaboration style: **sequential with discovery**. Scout scans first. Architect evaluates structure. Reviewer compiles findings. Scout discovers undocumented patterns. Pragmatist challenges proposed additions.
 
@@ -57,7 +57,7 @@ No documented standards exist yet. Discover what the codebase actually does and 
 
 #### Phase 1: Codebase Discovery
 
-Launch the **scout**:
+Launch the **cortex-team:scout**:
 - Map folder structure: what are the top-level modules/directories, how is code organized?
 - Analyze import/dependency patterns: who imports whom? Are there consistent directions?
 - Find naming conventions: variables, functions, classes, files, directories
@@ -67,7 +67,7 @@ Launch the **scout**:
 
 #### Phase 2: Architecture Inference
 
-Launch the **architect** with scout's findings (if {{conform-focus}} is `both` or `architecture`):
+Launch the **cortex-team:architect** with scout's findings (if {{conform-focus}} is `both` or `architecture`):
 - Infer architectural layers from folder structure and import patterns
 - Identify module boundaries: which directories are self-contained?
 - Map dependency directions: which modules depend on which?
@@ -76,7 +76,7 @@ Launch the **architect** with scout's findings (if {{conform-focus}} is `both` o
 
 #### Phase 3: Idiom Extraction
 
-Launch the **scout** again (if {{conform-focus}} is `both` or `idioms`):
+Launch the **cortex-team:scout** again (if {{conform-focus}} is `both` or `idioms`):
 - From the patterns found in Phase 1, identify candidates for codified idioms
 - For each candidate: count how consistently it's followed (percentage)
 - Only propose idioms followed in >70% of applicable cases — these are actual conventions, not aspirations
@@ -84,7 +84,7 @@ Launch the **scout** again (if {{conform-focus}} is `both` or `idioms`):
 
 #### Phase 4: Challenge
 
-Launch the **pragmatist** with all proposed standards:
+Launch the **cortex-team:pragmatist** with all proposed standards:
 - For each proposed standard: is this an intentional design choice or an accident of history?
 - Would codifying this actually help, or is it unnecessary ceremony?
 - Are any proposed levels too strict (must vs should)?
@@ -92,7 +92,7 @@ Launch the **pragmatist** with all proposed standards:
 
 #### Phase 5: Structure & Report
 
-Launch the **reviewer**:
+Launch the **cortex-team:reviewer**:
 - Organize surviving proposals into the standard format (ID, level, rationale, boundary/pattern, examples)
 - Group into architecture vs idioms
 - Ensure IDs are sequential (ARCH-001, ARCH-002; IDIOM-001, IDIOM-002)
@@ -158,19 +158,19 @@ Standards are documented. Check the codebase against them, find violations, and 
 
 #### Phase 1: Standards Compliance Scan
 
-Launch the **scout** (if {{conform-focus}} is `both` or `idioms`):
+Launch the **cortex-team:scout** (if {{conform-focus}} is `both` or `idioms`):
 - For each IDIOM-NNN in the loaded idioms standards: scan files in scope for violations
 - Report each violation with file:line, the violated standard ID, and the specific code that violates it
 - Count compliance rate per standard (e.g., "IDIOM-003: 45/50 files compliant, 5 violations")
 
-Launch the **architect** in parallel (if {{conform-focus}} is `both` or `architecture`):
+Launch the **cortex-team:architect** in parallel (if {{conform-focus}} is `both` or `architecture`):
 - For each ARCH-NNN in the loaded architecture standards: check module boundaries and dependencies
 - Report each violation with file:line, the violated standard ID, and the offending import/dependency
 - Check for new modules/directories that aren't covered by existing standards
 
 #### Phase 2: Compile Violations
 
-Launch the **reviewer** with all findings:
+Launch the **cortex-team:reviewer** with all findings:
 - Deduplicate violations
 - Assign sequential VIOLATION-NNN IDs
 - Classify by severity: `must`-level violations are critical, `should`-level are warnings, `may`-level are informational
@@ -178,12 +178,12 @@ Launch the **reviewer** with all findings:
 
 #### Phase 3: Discovery & Evolution
 
-Launch the **scout** again:
+Launch the **cortex-team:scout** again:
 - Look for consistent patterns NOT captured in existing standards
 - Look for standards that no longer match reality (>30% violation rate suggests drift)
 - Report undocumented patterns with frequency counts
 
-Launch the **pragmatist** with scout's evolution findings:
+Launch the **cortex-team:pragmatist** with scout's evolution findings:
 - For proposed new standards: is this a real convention or noise?
 - For drifted standards: should the code conform, or should the standard update?
 - Challenge any proposed changes — don't update standards for trivialities
