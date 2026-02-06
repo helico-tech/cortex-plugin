@@ -57,12 +57,33 @@ Hand off to the calling command's task section. The command defines:
 
 ### Context management between phases
 
-Commands have multiple phases, each spawning agents. To prevent context from bloating:
+Commands have multiple phases, each spawning agents. Agent outputs can be enormous and will blow up the context window in multi-phase commands. **You must actively manage this.**
 
-- **After each phase**, summarize the agent's findings in 3-5 bullet points before moving to the next phase
-- **Pass summaries forward**, not full agent output — the next agent gets the summary plus the original task context
-- **The artifact has the detail** — when producing the artifact in step 5, pull from agent outputs (which are still available via the Task tool results), not from the running conversation summary
-- This keeps the main conversation lean while the artifact captures everything
+#### Write findings to scratch files, not the conversation
+
+When spawning an agent via the Task tool, instruct the agent to:
+
+1. **Write its full detailed findings** to a scratch file: `.cortex/artifacts/{feature-id}.{step-name}-notes.md`
+   - If no feature-id exists yet (first phase), use a temp name like `scratch-{command-name}`
+2. **Return only a concise summary** (5-10 bullet points max) as its Task result
+
+Example agent prompt suffix:
+> Write your complete findings to `.cortex/artifacts/{feature-id}.scout-notes.md`. Return only a 5-10 bullet point summary here.
+
+#### Pass file references forward, not content
+
+When launching the next phase's agent:
+- Give it the **file path** to the previous phase's scratch notes
+- Let the agent **read the file itself** if it needs detail
+- Do NOT paste the previous agent's full output into the next agent's prompt
+
+#### Artifact production reads from scratch files
+
+When producing the final artifact in step 5, read the scratch files to pull detailed findings. The scratch files are your working memory — the conversation is just coordination.
+
+#### Clean up
+
+After the artifact is produced, delete the scratch files. They've served their purpose.
 
 ## Step 5: Produce Artifact
 

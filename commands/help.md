@@ -159,3 +159,12 @@ brainstorm → design → plan → implement → review ↔ implement → valida
 | `help` | You are here |
 
 **Available workflows:** `feature`, `hotfix`, `refactor`, `maintenance`, `spike`
+
+**Recommended MCP servers:**
+
+| MCP Server | Used by | What it enables |
+|---|---|---|
+| `context7` | researcher | Fast library/framework documentation lookups |
+| `playwright` | tester, reviewer | Browser-based testing and visual validation |
+
+These are optional — commands degrade gracefully without them.
