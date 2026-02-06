@@ -20,7 +20,7 @@ description: Use this agent when you need current documentation, API references,
   </commentary>
   </example>
 
-model: inherit
+model: sonnet
 color: cyan
 tools: WebSearch, WebFetch, Read, Grep, Glob, mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---

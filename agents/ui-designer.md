@@ -29,7 +29,7 @@ description: Use this agent when you need to evaluate or create visual interface
   </commentary>
   </example>
 
-model: inherit
+model: sonnet
 color: magenta
 tools: Read, Grep, Glob, WebSearch, mcp__playwight__browser_navigate, mcp__playwight__browser_snapshot, mcp__playwight__browser_take_screenshot, mcp__playwight__browser_click, mcp__playwight__browser_hover, mcp__playwight__browser_press_key, mcp__playwight__browser_evaluate, mcp__playwight__browser_resize, mcp__playwight__browser_wait_for, mcp__context7__resolve-library-id, mcp__context7__query-docs
 ---

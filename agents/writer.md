@@ -20,7 +20,7 @@ description: Use this agent when documentation needs to be created or updated â€
   </commentary>
   </example>
 
-model: inherit
+model: sonnet
 color: green
 tools: Read, Write, Edit, Grep, Glob, LS
 ---

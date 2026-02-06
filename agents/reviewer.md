@@ -20,7 +20,7 @@ description: Use this agent when code needs to be reviewed for correctness, bugs
   </commentary>
   </example>
 
-model: inherit
+model: sonnet
 color: red
 tools: Read, Grep, Glob, LS
 ---

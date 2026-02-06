@@ -20,7 +20,7 @@ description: Use this agent when you need to challenge a proposal, cut unnecessa
   </commentary>
   </example>
 
-model: inherit
+model: sonnet
 color: yellow
 tools: Read, Grep, Glob, LS
 ---
