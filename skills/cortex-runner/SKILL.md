@@ -181,11 +181,17 @@ After writing the artifact, verify:
 
 If validation fails, fix the artifact before proceeding.
 
+**You are NOT done.** Steps 6 and 7 below are mandatory. Proceed now.
+
 ## Step 6: Write Journal
 
-After execution completes, write a journal entry to `.cortex/memory/journal/`.
+**MANDATORY.** Every command execution gets a journal entry. No exceptions. Do not skip this step.
+
+Write a journal entry to `.cortex/memory/journal/`.
 
 File path: `.cortex/memory/journal/YYYY-MM/YYYY-MM-DD-{feature-id}-{command-name}.md`
+
+Create the month directory if it doesn't exist.
 
 ```markdown
 ---
@@ -212,11 +218,13 @@ artifact-produced: (filename of artifact produced, or none)
 (anything unresolved that needs follow-up)
 ```
 
-Only write a journal entry if there's something meaningful to record. Don't create empty or boilerplate entries.
+Keep entries concise but substantive. Every run produces something worth recording — even if it's just "ran audit, found nothing, codebase is clean."
 
 ## Step 7: Propose Context Updates
 
-After writing the journal entry, review what was learned and decide if any findings are worth preserving as long-term project context.
+**MANDATORY.** Always execute this step after writing the journal. You may conclude that no updates are needed — that's fine — but you must explicitly evaluate and tell the user.
+
+Review what was learned and decide if any findings are worth preserving as long-term project context.
 
 If there are valuable findings, propose specific updates to `.cortex/memory/context/`:
 - For each proposal, show the **file path** and the **exact content** you would write
