@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (19 + init), workflows that orchestrate commands, artifacts that chain between commands, and structured memory.
+`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (10 with deliberate tensions), parameterized commands (19 + init), workflows that orchestrate commands, artifacts that chain between commands, and structured memory.
 
 See `docs/design.md` for the full design document with rationale.
 
@@ -19,7 +19,7 @@ claude --plugin-dir /Users/avanwieringen/Development/helico/cortex-team-plugin
 
 ```
 .claude-plugin/plugin.json        ← manifest
-agents/                            ← 8 role-based agent definitions (.md)
+agents/                            ← 10 role-based agent definitions (.md)
 commands/                          ← 20 slash commands (.md)
 workflows/                         ← plugin-level workflow definitions (.md)
 skills/cortex-runner/SKILL.md      ← shared 7-step execution flow
@@ -59,7 +59,7 @@ Standard workflows: `feature` (design→validate), `hotfix` (fix→review), `ref
 
 ## Agents
 
-scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer — all `model: inherit`. Every command uses teams, never solo agents.
+scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer, ux-designer, ui-designer — all `model: inherit`. Every command uses teams, never solo agents. UX designer and UI designer introspect for Playwright and context7 MCP servers, degrading gracefully if unavailable.
 
 ## Artifacts
 

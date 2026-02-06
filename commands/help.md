@@ -123,7 +123,7 @@ Provide a concise explanation of cortex-team:
 **The system in 30 seconds:**
 - cortex-team standardizes how your team uses Claude across projects
 - **Commands** are what you run: `/cortex-team:design`, `/cortex-team:implement`, etc.
-- **Agents** are specialized roles (scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer) that work in teams — never solo
+- **Agents** are specialized roles (scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer, ux-designer, ui-designer) that work in teams — never solo
 - **Artifacts** are standardized outputs (design docs, task lists, reviews) that chain between commands. Stored in `.cortex/artifacts/`
 - **Memory** accumulates project knowledge in `.cortex/memory/context/` (curated, always loaded) and `.cortex/memory/journal/` (raw history)
 - **Workflows** orchestrate multiple commands: `/cortex-team:workflow feature`
