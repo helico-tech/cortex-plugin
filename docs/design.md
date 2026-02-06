@@ -8,12 +8,25 @@ Teams using Claude Code lack standardization. Each developer invents their own p
 
 `cortex-team` is a Claude Code plugin that standardizes how a team uses Claude. It provides:
 
-- **Role-based agents** with fixed personas and tool sets
-- **Parameterized commands** (prompt templates) that collect structured input before executing
+- **Role-based agents** with deliberate tensions between them
+- **Parameterized commands** that use teams of experts (never solo agents)
+- **Artifacts** — standardized outputs that chain between commands
 - **Structured memory** that accumulates project knowledge over time
-- **A shared execution flow** that every command follows
+- **A shared execution flow** (cortex-runner) that every command follows
 
-The plugin owns the standard. Projects own the memory. Knowledge is git-tracked and shared through normal version control.
+The plugin owns the standard. Projects own the memory and artifacts. Everything is git-tracked and shared through normal version control.
+
+## Core Flow
+
+The primary workflow chains commands through artifacts:
+
+```
+design → plan → implement → review ←→ implement (feedback loop) → validate
+```
+
+Each command consumes artifacts from prior commands and produces its own. This creates a traceable chain from design decisions through to validation.
+
+Additional standalone commands: `fix`, `refactor`, `tidy` — each with their own artifact contracts.
 
 ## Design Decisions
 
@@ -25,20 +38,67 @@ Each template is therefore a command file. The shared execution ceremony lives i
 
 **Decided:** Each prompt template = a command. Shared logic = a skill.
 
-### Shared execution flow via cortex-runner skill
+### Shared execution flow via cortex-runner skill (7 steps)
 
-Every command follows the same 5-step flow. Rather than duplicate these steps across commands, a single `cortex-runner` skill defines the ceremony. Each command says "use the cortex-runner skill" and only defines what's unique: params, agents, and the task.
+Every command follows the same 7-step flow. Rather than duplicate these steps across commands, a single `cortex-runner` skill defines the ceremony. Each command says "use the cortex-runner skill" and only defines what's unique: params, agents, and the task.
 
 **Steps:**
 1. Collect parameters (defined per command)
-2. Load memory (always the same)
-3. Execute task with agents (defined per command)
-4. Write journal entry (always the same)
-5. Propose context updates (always the same, human approves)
+2. Load memory (always the same — all `.cortex/memory/context/` files)
+3. Load consumed artifacts (check command's `consumes:` declaration, stop if missing)
+4. Execute task with agents (defined per command)
+5. Produce artifact (auto-increment 4-digit feature ID for new features, write with required frontmatter)
+6. Write journal entry (always the same)
+7. Propose context updates (always the same, human approves)
 
-### Role-based agents, not task-based
+### Role-based agents with deliberate tensions
 
-Agents are personas (architect, reviewer, etc.) rather than task-specific (requirements-gatherer, code-implementer). The reason: a role-based agent accumulates identity across workflow steps. The architect agent in step 2 carries context that enriches its work in step 5. Task-based agents start cold every time.
+Agents are defined by **role** because an agent in a role can maintain continuity and perspective across workflow steps. The roster is designed with deliberate tensions — agents that productively disagree:
+
+| Tension | Agent A | Agent B | What They Fight About |
+|---|---|---|---|
+| Build vs Challenge | Architect | Pragmatist | Is this over-engineered? |
+| Build vs Break | Implementer | Reviewer | Does this code hold up? |
+| Explore vs Judge | Scout | Tester | What's here vs what's missing? |
+
+Every command uses **teams of experts** — multiple agents collaborating, never a single agent working alone. Commands define the collaboration style: sequential, parallel, debate, or iterative loops.
+
+### Artifact system
+
+Artifacts are the backbone of the workflow. They are standardized outputs that chain between commands with explicit contracts.
+
+**Storage:** `.cortex/artifacts/{feature-id}.{artifact-type}.md`
+
+**Feature IDs:** 4-digit sequential prefix + slug: `0001-auth-flow`, `0002-notification-system`. Auto-incremented from the highest existing ID in `.cortex/artifacts/`.
+
+**Artifact types and their producing commands:**
+
+| Artifact | Produced By | Consumed By |
+|---|---|---|
+| design | design, refactor | plan, implement, review, validate |
+| tasks | plan, fix (small) | implement, review, validate |
+| review | review | validate, implement (on fail) |
+| validation | validate | — |
+| tidy-report | tidy | — |
+
+**Frontmatter contract** — every artifact MUST have:
+```yaml
+---
+artifact: {type}
+feature: {slug}
+feature-id: {NNNN-slug}
+status: active
+command: {producing-command}
+created: YYYY-MM-DD
+source: {consumed-artifact-filename or null}
+agents: [{participating agents}]
+---
+```
+
+**Key rules:**
+- Commands that `consume` an artifact will **stop execution** if it's missing, directing the user to the producing command
+- One file per type per feature, overwritten on re-run (git tracks history)
+- The review feedback loop: failed review → findings become new tasks → implement picks them up → review again
 
 ### Two-tier memory: context + journal
 
@@ -59,22 +119,15 @@ We evaluated 5 memory categories (conventions, domain-model, decisions, lessons-
 - `reflections/` was per-agent journaling nobody would read
 
 **Why context is human-curated:**
-Agent-written memory that auto-loads is a bloat machine. Instead, agents propose context updates after each run, and the human approves. This keeps context small, relevant, and trusted.
-
-**Why journal exists at all:**
-Raw history has value for reference, git blame, and future curation commands. It just shouldn't be injected into every prompt.
+Agent-written memory that auto-loads is a bloat machine. Instead, agents propose context updates after each run (step 7), and the human approves. This keeps context small, relevant, and trusted.
 
 ### No config.json
 
 We initially had a `.cortex/config.json` for project name, description, and tech stack. Killed it — that information already lives in `package.json`, `README.md`, and `CLAUDE.md`. Duplicated context goes stale.
 
-### No workflows (yet)
+### Testing is part of design, not an afterthought
 
-Workflows (multi-step orchestration composing multiple commands) are explicitly deferred. The current primitives (commands, agents, memory) need to be solid first. Workflows compose them later.
-
-### No feature-scoping (yet)
-
-Memory scoped by feature-name was cut. Freeform text as filesystem keys fragments immediately (`auth` vs `authentication` vs `login`). If feature-scoping is needed later, it should use a controlled vocabulary — not freeform input.
+The design command includes a **tester** agent. Test strategy, test plan, pass/fail criteria, and risk areas are all defined at design time. Every test is numbered (TEST-NNN), leveled (unit/integration/e2e), and linked to requirements (REQ-NNN). The plan command then ensures test tasks are woven into the implementation flow, not bolted on at the end.
 
 ## Architecture
 
@@ -85,18 +138,58 @@ cortex-team-plugin/
   .claude-plugin/
     plugin.json                ← name, version, description
   agents/
-    architect.md               ← role-based agent definitions
-    (future: reviewer.md, analyst.md, etc.)
+    scout.md                   ← maps codebase, reports facts
+    architect.md               ← structural decisions, design
+    pragmatist.md              ← challenges complexity, YAGNI
+    implementer.md             ← writes code, follows patterns
+    reviewer.md                ← adversarial code review
+    tester.md                  ← test strategy and test writing
+    researcher.md              ← web research, docs, APIs
+    writer.md                  ← developer documentation
   commands/
     cortex-init.md             ← /cortex-team:cortex-init
-    architecture-review.md     ← /cortex-team:architecture-review
-    (future: code-review.md, feature-design.md, etc.)
+    design.md                  ← /cortex-team:design
+    plan.md                    ← /cortex-team:plan
+    implement.md               ← /cortex-team:implement
+    review.md                  ← /cortex-team:review
+    validate.md                ← /cortex-team:validate
+    fix.md                     ← /cortex-team:fix
+    refactor.md                ← /cortex-team:refactor
+    tidy.md                    ← /cortex-team:tidy
   skills/
     cortex-runner/
-      SKILL.md                 ← shared 5-step execution flow
+      SKILL.md                 ← shared 7-step execution flow
   docs/
     design.md                  ← this file
 ```
+
+### Agent Roster
+
+| Agent | Color | Core Trait | Tools | Key Constraint |
+|---|---|---|---|---|
+| Scout | cyan | Maps codebase, reports facts | Read, Grep, Glob, LS, WebSearch | Does NOT suggest changes |
+| Architect | blue | Structural decisions | Read, Grep, Glob, LS | Does NOT write code |
+| Pragmatist | yellow | Challenges complexity | Read, Grep, Glob, LS | Tears down, does NOT build |
+| Implementer | green | Writes code | Read, Write, Edit, Grep, Glob, LS, Bash, WebSearch | Does NOT question design |
+| Reviewer | red | Adversarial code review | Read, Grep, Glob, LS | Does NOT write code |
+| Tester | magenta | Test strategy + writing | Read, Write, Edit, Grep, Glob, LS, Bash | Tests only, no production code |
+| Researcher | cyan | Web research, docs | WebSearch, WebFetch, Read, Grep, Glob | Reports findings, no opinions |
+| Writer | green | Developer docs | Read, Write, Edit, Grep, Glob, LS | Docs only, no code evaluation |
+
+All agents use `model: inherit`.
+
+### Command Contracts
+
+| Command | Consumes | Produces | Agents | Collaboration |
+|---|---|---|---|---|
+| design | — | design | researcher, scout, architect, pragmatist, tester | Sequential with debate |
+| plan | design | tasks | architect, implementer, tester | Sequential refinement |
+| implement | tasks, design | tasks (updated) | scout, implementer, tester | Iterative loop per task |
+| review | tasks, design | review | reviewer, architect | Parallel then merge |
+| validate | design, tasks, review | validation | tester, reviewer | Sequential |
+| fix | — | tasks (small) or routes to design | scout, pragmatist, implementer, tester | Sequential with triage gate |
+| refactor | — | design | scout, architect, pragmatist, tester | Sequential with debate |
+| tidy | — | tidy-report | scout, reviewer, implementer, tester | Find-fix-verify loop |
 
 ### Project Structure (after cortex-init)
 
@@ -107,50 +200,14 @@ any-project/
       context/                 ← curated knowledge (always loaded)
         conventions.md         ← (created by team over time)
         domain-model.md        ← (created by team over time)
-        decisions.md           ← (created by team over time)
       journal/                 ← raw history (never auto-loaded)
         2026-02/
-          2026-02-06-auth-architecture-review.md
-```
-
-### Execution Flow
-
-```
-User invokes /cortex-team:architecture-review
-        │
-        ▼
-┌─ Step 1: Collect Params ──────────────────────┐
-│  Read command's Params section                 │
-│  Ask each question, wait for answer            │
-│  Store answers for {{placeholder}} injection   │
-└────────────────────────────────────────────────┘
-        │
-        ▼
-┌─ Step 2: Load Memory ─────────────────────────┐
-│  Read all .md files from .cortex/memory/context│
-│  Summarize what was loaded                     │
-└────────────────────────────────────────────────┘
-        │
-        ▼
-┌─ Step 3: Execute ─────────────────────────────┐
-│  Hydrate task with params + memory             │
-│  Launch agent(s) per command spec              │
-│  Respect collaboration style if multi-agent    │
-└────────────────────────────────────────────────┘
-        │
-        ▼
-┌─ Step 4: Write Journal ───────────────────────┐
-│  Write structured entry to journal/YYYY-MM/    │
-│  Automatic, no approval needed                 │
-└────────────────────────────────────────────────┘
-        │
-        ▼
-┌─ Step 5: Propose Context Updates ─────────────┐
-│  Agent reviews findings                        │
-│  Proposes additions to context/ with preview   │
-│  Human approves or skips                       │
-│  Only writes to context/ on approval           │
-└────────────────────────────────────────────────┘
+          2026-02-06-0001-auth-flow-design.md
+    artifacts/                 ← standardized command outputs
+      0001-auth-flow.design.md
+      0001-auth-flow.tasks.md
+      0001-auth-flow.review.md
+      0001-auth-flow.validation.md
 ```
 
 ### Command Anatomy
@@ -167,15 +224,43 @@ argument-hint: Optional hint for arguments
 
 Use the **cortex-runner** skill to execute this template.
 
+## Artifacts
+- produces: {artifact-type}
+- consumes: {artifact-type(s) or none}
+
 ## Params
 (command-specific parameters with types, questions, options)
 
 ## Agents
-(which agents to use, collaboration style if multiple)
+(which agents to use, collaboration style)
 
 ## Task
-(the actual prompt with {{param}} placeholders and memory injection points)
+(the actual task with {{param}} placeholders and phased execution)
 ```
+
+### Review Feedback Loop
+
+The review command has a built-in feedback loop:
+
+```
+implement → review
+              │
+        ┌─────┴─────┐
+        │            │
+      PASS         FAIL
+        │            │
+        ▼            ▼
+    validate    Convert critical findings
+                to new tasks in task list
+                        │
+                        ▼
+                   implement (again)
+                        │
+                        ▼
+                    review (again)
+```
+
+Failed reviews append new tasks to the existing task list (continuing TASK numbering). The user runs `/cortex-team:implement` again to address them.
 
 ### Memory File Formats
 
@@ -192,33 +277,32 @@ Use the **cortex-runner** skill to execute this template.
 ```markdown
 ---
 date: 2026-02-06
-command: architecture-review
-topic: frontend
-agents: [architect]
+command: design
+feature-id: 0001-auth-flow
+agents: [researcher, scout, architect, pragmatist, tester]
+artifact-produced: 0001-auth-flow.design.md
 ---
 
 ## Summary
-Reviewed frontend architecture of the dashboard.
+Designed the authentication flow for the dashboard.
 
 ## Key Findings
-- State management is clean, uses TanStack Query
-- Missing error boundaries
+- Existing session handling is cookie-based
+- Need to support both JWT and session tokens
 
 ## Decisions Made
-- Adopt error boundaries at route level
+- Use JWT for API, sessions for web
 
 ## Open Questions
-- Should we add form validation with RHF + Zod?
+- Token rotation strategy TBD
 ```
 
 ## Future Work
 
 These are explicitly deferred, not forgotten:
 
-- **More agents** — reviewer, business-analyst, implementer, QA
-- **More commands** — code-review, feature-design, implementation, retrospective
-- **Multi-agent collaboration** — debate, parallel, round-robin styles within a single command
-- **Workflows** — composing multiple commands into multi-step sequences
+- **Workflows** — composing multiple commands into multi-step orchestrated sequences
 - **Feature-scoping for memory** — controlled vocabulary for feature names, scoped loading
 - **Curation command** — `/cortex-team:curate` that reads journal entries and proposes context updates in bulk
 - **Size awareness** — warn when context/ exceeds a token threshold
+- **Guard-rails** — commands checking if cortex is properly initialized before running

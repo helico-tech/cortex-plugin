@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents, parameterized commands, and structured memory that accumulates over time.
+`cortex-team` is a Claude Code plugin for standardizing how a team uses Claude. It provides role-based agents (8 with deliberate tensions), parameterized commands (8 + init), artifacts that chain between commands, and structured memory.
 
 See `docs/design.md` for the full design document with rationale.
 
@@ -19,9 +19,9 @@ claude --plugin-dir /Users/avanwieringen/Development/helico/cortex-team-plugin
 
 ```
 .claude-plugin/plugin.json        ← manifest
-agents/                            ← role-based agent definitions (.md)
-commands/                          ← slash commands / prompt templates (.md)
-skills/cortex-runner/SKILL.md      ← shared execution flow (params, memory, storage)
+agents/                            ← 8 role-based agent definitions (.md)
+commands/                          ← 9 slash commands (.md)
+skills/cortex-runner/SKILL.md      ← shared 7-step execution flow
 docs/design.md                     ← design document
 ```
 
@@ -30,9 +30,27 @@ docs/design.md                     ← design document
 Every command delegates to the `cortex-runner` skill for shared ceremony:
 1. Collect params (defined per command)
 2. Load memory from `.cortex/memory/context/`
-3. Execute task with agents (defined per command)
-4. Write journal to `.cortex/memory/journal/`
-5. Propose context updates (human approves)
+3. Load consumed artifacts (stop if missing)
+4. Execute task with agent teams (defined per command)
+5. Produce artifact (4-digit feature ID, required frontmatter)
+6. Write journal to `.cortex/memory/journal/`
+7. Propose context updates (human approves)
+
+## Core Flow
+
+```
+design → plan → implement → review ←→ implement (feedback loop) → validate
+```
+
+Standalone: `fix` (triage + fix or route to design), `refactor` (produces design), `tidy` (find-fix-verify)
+
+## Agents
+
+scout, architect, pragmatist, implementer, reviewer, tester, researcher, writer — all `model: inherit`. Every command uses teams, never solo agents.
+
+## Artifacts
+
+Stored at `.cortex/artifacts/{NNNN-feature-slug}.{artifact-type}.md` with required YAML frontmatter. Types: design, tasks, review, validation, tidy-report.
 
 ## Git Workflow
 
